@@ -12,7 +12,8 @@ import { preloadPortrait, requestGeneratedPortrait } from '../portraitGeneration
 import './ZodiacRevealLoader.css';
 
 const tileRevealOrder = [0, 6, 2, 4, 8, 1, 5, 3, 7];
-const tileBlurLevels = [8, 14, 10, 16, 28, 18, 9, 15, 11];
+const tileBlurLevels = [10, 18, 13, 22, 34, 26, 12, 24, 16];
+const tileFrostLevels = [0.5, 0.62, 0.54, 0.68, 0.82, 0.74, 0.57, 0.71, 0.59];
 const MONTHS = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -340,7 +341,7 @@ const ZodiacRevealLoader = () => {
                         const tileStyle = {
                             '--tile-delay': `${revealIndex * 180}ms`,
                             '--tile-blur': `${tileBlurLevels[index]}px`,
-                            '--frost-opacity': 0.5 + (tileBlurLevels[index] / 100)
+                            '--frost-opacity': tileFrostLevels[index]
                         };
                         return (
                             <span className='portrait-tile' key={index} style={tileStyle} aria-hidden='true' />

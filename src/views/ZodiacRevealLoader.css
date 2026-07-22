@@ -559,9 +559,9 @@ select {
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: grayscale(1) blur(18px) contrast(0.82) brightness(1.08);
+  filter: grayscale(1) blur(14px) contrast(0.84) brightness(1.07);
   opacity: 0;
-  transform: scale(1.08);
+  transform: scale(1.03);
 }
 
 .phase-4 .portrait-grid__image {
@@ -570,7 +570,7 @@ select {
 
 .phase-5 .portrait-grid__image {
   opacity: 1;
-  transform: scale(1.08);
+  transform: scale(1.03);
 }
 
 .phase-6 .portrait-grid__image {
@@ -742,15 +742,15 @@ select {
 }
 
 @keyframes portrait-arrival {
-  from { opacity: 0; transform: scale(1.1); }
-  to { opacity: 1; transform: scale(1.08); }
+  from { opacity: 0; transform: scale(1.05); }
+  to { opacity: 1; transform: scale(1.03); }
 }
 
 @keyframes portrait-unlock {
   from {
     opacity: 1;
-    filter: grayscale(1) blur(18px) contrast(0.82) brightness(1.08);
-    transform: scale(1.08);
+    filter: grayscale(1) blur(14px) contrast(0.84) brightness(1.07);
+    transform: scale(1.03);
   }
   to {
     opacity: 1;
