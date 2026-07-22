@@ -546,6 +546,7 @@ select {
 }
 
 .phase-3 .planet-map {
+  width: min(76%, 760px);
   opacity: 1;
 }
 
