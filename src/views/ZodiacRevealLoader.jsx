@@ -402,7 +402,7 @@ const ZodiacRevealLoader = () => {
                     <rect className='chart-line chart-line--frame' x='55' y='48' width='890' height='754' />
                     <path className='chart-line chart-line--diamond' d='M500 78 L850 425 L500 772 L150 425 Z' />
                     <circle className='chart-line chart-line--circle' cx='500' cy='425' r='188' />
-                    <path className='chart-line chart-line--axis' d='M55 425 H945 M500 48 V802 M250 175 L750 675 M750 175 L250 675' />
+                    <path className='chart-line chart-line--axis' d='M55 425 H945 M500 48 V802' />
                     <g className='zodiac-ring' mask='url(#zodiac-corners)'>
                         <circle className='zodiac-orbit zodiac-orbit--outer' cx='500' cy='425' r='337' />
                         <circle className='zodiac-orbit zodiac-orbit--middle' cx='500' cy='425' r='315' />
