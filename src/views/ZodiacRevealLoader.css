@@ -593,12 +593,25 @@ select {
 .portrait-tile::before {
   content: '';
   position: absolute;
-  z-index: -1;
-  inset: -34px;
+  z-index: 1;
+  inset: 0;
   background: rgba(241, 239, 234, var(--frost-opacity));
-  -webkit-backdrop-filter: blur(var(--tile-blur)) saturate(0.62);
-  backdrop-filter: blur(var(--tile-blur)) saturate(0.62);
-  transform: translateZ(0);
+  pointer-events: none;
+}
+
+.portrait-tile__image {
+  position: absolute;
+  z-index: 0;
+  top: calc(var(--tile-row) * -100%);
+  left: calc(var(--tile-column) * -100%);
+  display: block;
+  width: 300%;
+  height: 300%;
+  max-width: none;
+  object-fit: cover;
+  filter: grayscale(1) blur(var(--tile-blur)) contrast(0.84) brightness(1.07);
+  transform: scale(1.03);
+  transform-origin: center;
 }
 
 .portrait-tile:nth-child(2),

@@ -12,8 +12,8 @@ import { preloadPortrait, requestGeneratedPortrait } from '../portraitGeneration
 import './ZodiacRevealLoader.css';
 
 const tileRevealOrder = [0, 6, 2, 4, 8, 1, 5, 3, 7];
-const tileBlurLevels = [10, 18, 13, 22, 34, 26, 12, 24, 16];
-const tileFrostLevels = [0.5, 0.62, 0.54, 0.68, 0.82, 0.74, 0.57, 0.71, 0.59];
+const tileBlurLevels = [6, 18, 10, 26, 44, 32, 13, 38, 22];
+const tileFrostLevels = [0.5, 0.54, 0.51, 0.58, 0.7, 0.61, 0.52, 0.64, 0.56];
 const MONTHS = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -341,10 +341,16 @@ const ZodiacRevealLoader = () => {
                         const tileStyle = {
                             '--tile-delay': `${revealIndex * 180}ms`,
                             '--tile-blur': `${tileBlurLevels[index]}px`,
-                            '--frost-opacity': tileFrostLevels[index]
+                            '--frost-opacity': tileFrostLevels[index],
+                            '--tile-column': index % 3,
+                            '--tile-row': Math.floor(index / 3)
                         };
                         return (
-                            <span className='portrait-tile' key={index} style={tileStyle} aria-hidden='true' />
+                            <span className='portrait-tile' key={index} style={tileStyle} aria-hidden='true'>
+                                {submittedData.portraitUrl && (
+                                    <img className='portrait-tile__image' src={submittedData.portraitUrl} alt='' />
+                                )}
+                            </span>
                         );
                     })}
                 </div>
