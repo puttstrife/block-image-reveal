@@ -62,7 +62,7 @@ const PlanetConnections = () => (
             <span
                 className='planet-node'
                 key={`${planet.symbol}-${index}`}
-                style={{ '--planet-x': `${planet.x}%`, '--planet-y': `${planet.y}%`, '--planet-delay': `${index * 520}ms` }}
+                style={{ '--planet-x': `${planet.x}%`, '--planet-y': `${planet.y}%`, '--planet-delay': `${index * 640}ms` }}
             >
                 {planet.symbol}
             </span>
