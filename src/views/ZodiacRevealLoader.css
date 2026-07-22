@@ -879,7 +879,8 @@ select {
 }
 
 .phase-7 .portrait-grid {
-  animation: grid-frame-release 2.2s cubic-bezier(.2, .72, .22, 1) forwards;
+  border: 0;
+  box-shadow: none;
 }
 
 .portrait-grid__image {
@@ -1161,14 +1162,6 @@ select {
     opacity: 1;
     filter: grayscale(1) blur(0) contrast(0.96) brightness(1.02);
     transform: scale(1);
-  }
-}
-
-@keyframes grid-frame-release {
-  to {
-    border-color: transparent;
-    background: transparent;
-    box-shadow: 0 24px 64px rgba(46, 37, 25, 0.18);
   }
 }
 
