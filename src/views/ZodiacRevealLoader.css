@@ -294,17 +294,19 @@ select {
 .generation-status {
   position: absolute;
   z-index: 7;
+  top: 50%;
   left: 50%;
-  bottom: 7%;
+  width: min(74%, 720px);
   margin: 0;
-  color: rgba(67, 58, 45, 0.76);
-  font-family: 'Geist Variable', Geist, Inter, ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(0.68rem, 1.4vw, 0.9rem);
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  transform: translateX(-50%);
-  white-space: nowrap;
+  color: rgba(40, 36, 31, 0.82);
+  font-family: 'Snell Roundhand', 'Segoe Script', 'Bradley Hand', cursive;
+  font-size: clamp(1.15rem, 4.1vw, 3.4rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.05;
+  text-align: center;
+  text-transform: none;
+  transform: translate(-50%, -50%);
   animation: generation-pulse 1.8s ease-in-out infinite;
 }
 
