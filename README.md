@@ -9,4 +9,4 @@ yarn install
 yarn dev
 ```
 
-Enter a name and birthdate to begin the sequence. Concentric celestial wheels rotate before the identity inscription, zodiac chart, and nine-pane frosted portrait reveal.
+Enter a name and birthdate to begin the sequence. The existing geometric frame progresses through preparation, zodiac alignment, planet mapping, romantic alignment, and soulmate-energy stages before the nine-pane frosted portrait reveal.

@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-    formatBirthdate,
     getInitialRevealPhase,
     getTodayInputValue,
     getZodiacSign,
-    REVEAL_TIMINGS,
+    REVEAL_STAGE_DURATIONS,
     validateRevealForm,
     ZODIAC_SIGNS
 } from '../zodiac';
@@ -27,14 +26,86 @@ const soulmateOptions = [
 ];
 
 const phaseLabels = {
-    1: 'The stars are weaving your destined portrait',
-    2: 'Turning the celestial wheels',
-    3: 'Inscribing your name among the stars',
-    4: 'Unveiling your celestial alignment',
-    5: 'Your destined portrait is taking form',
+    1: 'Preparing your celestial portrait…',
+    2: 'Reading your zodiac alignment…',
+    3: 'Mapping the planets at your birth…',
+    4: 'Finding your strongest romantic connection…',
+    5: 'Interpreting your soulmate’s energy…',
     6: 'Your destined portrait is ready to unlock',
     7: 'Your soulmate portrait is revealed'
 };
+
+const ZODIAC_SYMBOLS = ['♈︎', '♉︎', '♊︎', '♋︎', '♌︎', '♍︎', '♎︎', '♏︎', '♐︎', '♑︎', '♒︎', '♓︎'];
+const PLANET_NODES = [
+    { symbol: '☉', x: 50, y: 28 },
+    { symbol: '☽', x: 68, y: 38 },
+    { symbol: '♀', x: 64, y: 63 },
+    { symbol: '♂', x: 38, y: 68 },
+    { symbol: '♃', x: 30, y: 43 }
+];
+
+const ZodiacWheelLayers = () => (
+    <div className='celestial-wheels' aria-hidden='true'>
+        <img className='celestial-wheel celestial-wheel--outer' src='/block-image-reveal/images/celestial-wheels/outer.png' alt='' />
+        <img className='celestial-wheel celestial-wheel--middle' src='/block-image-reveal/images/celestial-wheels/middle.png' alt='' />
+        <img className='celestial-wheel celestial-wheel--center' src='/block-image-reveal/images/celestial-wheels/center.png' alt='' />
+    </div>
+);
+
+const PlanetConnections = () => (
+    <div className='planet-map' aria-hidden='true'>
+        <svg className='planet-map__lines' viewBox='0 0 100 100'>
+            <path d='M50 28 L68 38 L64 63 L38 68 L30 43 Z' />
+            <path d='M50 28 L64 63 M68 38 L38 68' />
+        </svg>
+        {PLANET_NODES.map((planet, index) => (
+            <span
+                className='planet-node'
+                key={`${planet.symbol}-${index}`}
+                style={{ '--planet-x': `${planet.x}%`, '--planet-y': `${planet.y}%`, '--planet-delay': `${index * 520}ms` }}
+            >
+                {planet.symbol}
+            </span>
+        ))}
+    </div>
+);
+
+const RomanticAlignment = ({ sunSign }) => {
+    const signIndex = Math.max(0, ZODIAC_SIGNS.findIndex(sign => sign.name === sunSign?.name));
+    const oppositeIndex = (signIndex + 6) % ZODIAC_SIGNS.length;
+
+    return (
+        <div className='romantic-alignment' aria-hidden='true'>
+            <svg viewBox='0 0 100 100'>
+                <path className='romantic-alignment__line' d='M27 50 H73' />
+                <circle className='romantic-alignment__pulse' cx='50' cy='50' r='3.4' />
+            </svg>
+            <span className='romantic-symbol romantic-symbol--left'>{ZODIAC_SYMBOLS[signIndex]}</span>
+            <span className='romantic-symbol romantic-symbol--right'>{ZODIAC_SYMBOLS[oppositeIndex]}</span>
+        </div>
+    );
+};
+
+const EnergyPattern = () => (
+    <div className='energy-reading' aria-hidden='true'>
+        <svg className='energy-pattern' viewBox='0 0 100 100'>
+            <circle className='energy-pattern__ring' cx='50' cy='50' r='24' />
+            <path d='M35 55 C39 35 61 35 65 55' />
+            <path d='M39 60 C42 44 58 44 61 60' />
+            <path d='M43 63 C45 52 55 52 57 63' />
+            <path d='M34 48 C42 29 64 34 68 51' />
+            <path d='M46 66 C47 59 53 59 54 66' />
+            <circle className='energy-pattern__core' cx='50' cy='50' r='4' />
+        </svg>
+        <div className='moon-phases'>
+            {Array.from({ length: 8 }, (_, index) => <span className={`moon-phase moon-phase--${index + 1}`} key={index} />)}
+        </div>
+        <span className='element-mark element-mark--fire'>△ Fire</span>
+        <span className='element-mark element-mark--earth'>▽ Earth</span>
+        <span className='element-mark element-mark--air'>△ Air</span>
+        <span className='element-mark element-mark--water'>▽ Water</span>
+    </div>
+);
 
 const ZodiacRevealLoader = () => {
     const [name, setName] = useState('');
@@ -47,8 +118,10 @@ const ZodiacRevealLoader = () => {
     const [errors, setErrors] = useState({});
     const [phase, setPhase] = useState(0);
     const [reducedMotion, setReducedMotion] = useState(false);
+    const [isDocumentVisible, setIsDocumentVisible] = useState(true);
     const timers = useRef([]);
     const generationAbort = useRef();
+    const revealRun = useRef(0);
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -60,8 +133,16 @@ const ZodiacRevealLoader = () => {
     }, []);
 
     useEffect(() => () => {
+        revealRun.current += 1;
         timers.current.forEach(window.clearTimeout);
         generationAbort.current?.abort();
+    }, []);
+
+    useEffect(() => {
+        const updateVisibility = () => setIsDocumentVisible(document.visibilityState !== 'hidden');
+        updateVisibility();
+        document.addEventListener('visibilitychange', updateVisibility);
+        return () => document.removeEventListener('visibilitychange', updateVisibility);
     }, []);
 
     const birthdate = birthMonth && birthDay && birthYear
@@ -105,8 +186,12 @@ const ZodiacRevealLoader = () => {
         }
 
         timers.current.forEach(window.clearTimeout);
+        timers.current = [];
         generationAbort.current?.abort();
-        generationAbort.current = new AbortController();
+        const controller = new AbortController();
+        generationAbort.current = controller;
+        const runId = revealRun.current + 1;
+        revealRun.current = runId;
         const revealData = { name: validation.trimmedName, birthdate, portraitUrl: '' };
         setSubmittedData(revealData);
         setPhase(1);
@@ -116,48 +201,80 @@ const ZodiacRevealLoader = () => {
             birthdate,
             soulmatePreference
         };
-        const minimumFirstFrame = new Promise(resolve => window.setTimeout(resolve, REVEAL_TIMINGS.wheels));
 
         const generateWithRetry = async () => {
             try {
-                return await requestGeneratedPortrait(generationInput, { signal: generationAbort.current.signal });
+                return await requestGeneratedPortrait(generationInput, { signal: controller.signal });
             } catch (error) {
-                if (generationAbort.current.signal.aborted) {
+                if (controller.signal.aborted) {
                     throw error;
                 }
-                return requestGeneratedPortrait(generationInput, { signal: generationAbort.current.signal });
+                return requestGeneratedPortrait(generationInput, { signal: controller.signal });
             }
         };
 
-        try {
-            const [generatedPortraitUrl] = await Promise.all([generateWithRetry(), minimumFirstFrame]);
-            await preloadPortrait(generatedPortraitUrl);
-            const completedData = { ...revealData, portraitUrl: generatedPortraitUrl };
-            setSubmittedData(completedData);
+        const generationState = { status: 'pending' };
+        const generationTask = (async () => {
+            try {
+                const generatedPortraitUrl = await generateWithRetry();
+                await preloadPortrait(generatedPortraitUrl);
+                if (revealRun.current !== runId) return;
+                generationState.status = 'ready';
+                setSubmittedData({ ...revealData, portraitUrl: generatedPortraitUrl });
+            } catch (error) {
+                if (controller.signal.aborted || revealRun.current !== runId) return;
+                generationState.status = 'error';
+            }
+        })();
 
-            const initialPhase = getInitialRevealPhase(reducedMotion);
-            if (initialPhase === 6) {
+        if (getInitialRevealPhase(reducedMotion) === 6) {
+            await generationTask;
+            if (generationState.status === 'ready' && revealRun.current === runId) {
+                setPhase(6);
+            } else if (generationState.status === 'error') {
+                setSubmittedData(undefined);
+                setPhase(0);
+                setErrors({ ...nextErrors, generation: 'The portrait could not be generated. Please try again.' });
+            }
+            return;
+        }
+
+        const waitForStage = duration => new Promise(resolve => {
+            const timer = window.setTimeout(resolve, duration);
+            timers.current.push(timer);
+        });
+        const allStages = REVEAL_STAGE_DURATIONS.map((duration, index) => ({ phase: index + 1, duration }));
+        let stages = allStages;
+        let hasCompletedInitialSequence = false;
+
+        while (revealRun.current === runId) {
+            for (const stage of stages) {
+                setPhase(stage.phase);
+                await waitForStage(stage.duration);
+                if (revealRun.current !== runId) return;
+
+                if (generationState.status === 'error') {
+                    revealRun.current += 1;
+                    setSubmittedData(undefined);
+                    setPhase(0);
+                    setErrors({ ...nextErrors, generation: 'The portrait could not be generated. Please try again.' });
+                    return;
+                }
+
+                if (hasCompletedInitialSequence && generationState.status === 'ready') {
+                    setPhase(6);
+                    return;
+                }
+            }
+
+            hasCompletedInitialSequence = true;
+            if (generationState.status === 'ready') {
                 setPhase(6);
                 return;
             }
 
-            setPhase(2);
-            timers.current = [
-                window.setTimeout(() => setPhase(3), REVEAL_TIMINGS.identity - REVEAL_TIMINGS.wheels),
-                window.setTimeout(() => setPhase(4), REVEAL_TIMINGS.zodiac - REVEAL_TIMINGS.wheels),
-                window.setTimeout(() => setPhase(5), REVEAL_TIMINGS.portrait - REVEAL_TIMINGS.wheels),
-                window.setTimeout(() => setPhase(6), REVEAL_TIMINGS.complete - REVEAL_TIMINGS.wheels)
-            ];
-        } catch (error) {
-            if (generationAbort.current.signal.aborted) {
-                return;
-            }
-            setSubmittedData(undefined);
-            setPhase(0);
-            setErrors({
-                ...nextErrors,
-                generation: 'The portrait could not be generated. Please try again.'
-            });
+            // Stage 1 is an entrance; longer generations loop the celestial reading stages.
+            stages = allStages.slice(1);
         }
     };
 
@@ -257,12 +374,12 @@ const ZodiacRevealLoader = () => {
     }
 
     return (
-        <main className={`reveal-shell phase-${phase} ${reducedMotion ? 'reduced-motion' : ''}`}>
+        <main className={`reveal-shell phase-${phase} ${reducedMotion ? 'reduced-motion' : ''} ${isDocumentVisible ? '' : 'animations-paused'}`}>
             <p className='sr-only' role='status' aria-live='polite'>{phaseLabels[phase]}</p>
-            <section className='reveal-stage' data-phase={phase} aria-label='Animated zodiac portrait reveal' aria-busy={phase === 1 && !submittedData.portraitUrl}>
+            <section className='reveal-stage' data-phase={phase} aria-label='Animated zodiac portrait reveal' aria-busy={phase <= 5}>
                 <div className='paper-glow' aria-hidden='true' />
-                {phase === 1 && !submittedData.portraitUrl && (
-                    <p className='generation-status'>Weaving your celestial portrait…</p>
+                {phase <= 5 && (
+                    <p className='generation-status' key={phase}>{phaseLabels[phase]}</p>
                 )}
                 <svg className='chart-geometry' viewBox='0 0 1000 850' aria-hidden='true'>
                     <defs>
@@ -295,47 +412,10 @@ const ZodiacRevealLoader = () => {
                     </g>
                 </svg>
 
-                <div className='celestial-wheels' aria-hidden='true'>
-                    <img className='celestial-wheel celestial-wheel--outer' src='/block-image-reveal/images/celestial-wheels/outer.png' alt='' />
-                    <img className='celestial-wheel celestial-wheel--middle' src='/block-image-reveal/images/celestial-wheels/middle.png' alt='' />
-                    <img className='celestial-wheel celestial-wheel--center' src='/block-image-reveal/images/celestial-wheels/center.png' alt='' />
-                </div>
-
-                <div className='identity-inscription' aria-hidden={phase >= 4}>
-                    <p className='inscribed-name'>{submittedData.name}</p>
-                    <p className='inscribed-date'>{formatBirthdate(submittedData.birthdate)}</p>
-                </div>
-
-                <div className='zodiac-labels' aria-label={`Sun sign: ${sunSign.name}`}>
-                    {ZODIAC_SIGNS.map((sign, index) => {
-                        const angle = index * 30 - 90;
-                        const radians = angle * Math.PI / 180;
-                        const labelRotations = [0, 30, 60, -90, -60, -30, 0, 30, 60, -90, -60, -30];
-                        const position = {
-                            '--sign-x': `${50 + Math.cos(radians) * 35.7}%`,
-                            '--sign-y': `${50 + Math.sin(radians) * 39.5}%`,
-                            '--sign-delay': `${index * 70}ms`,
-                            '--sign-rotation': `${labelRotations[index]}deg`
-                        };
-                        return (
-                            <span
-                                className={`zodiac-name ${sign.name === sunSign.name ? 'zodiac-name--active' : ''}`}
-                                key={sign.name}
-                                style={position}
-                                aria-current={sign.name === sunSign.name ? 'true' : undefined}
-                            >
-                                {sign.name}
-                            </span>
-                        );
-                    })}
-                    <div className='zodiac-house-notes' aria-hidden='true'>
-                        <span className='house-note house-note--northwest'>Tenth House</span>
-                        <span className='house-note house-note--northeast'>First House</span>
-                        <span className='house-note house-note--southwest'>Seventh House</span>
-                        <span className='house-note house-note--southeast'>Fourth House</span>
-                    </div>
-                    <p className='sun-sign-label'>{sunSign.name} · Sun sign</p>
-                </div>
+                <ZodiacWheelLayers />
+                <PlanetConnections />
+                <RomanticAlignment sunSign={sunSign} />
+                <EnergyPattern />
 
                 <div
                     className='portrait-grid'

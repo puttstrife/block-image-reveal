@@ -1,10 +1,12 @@
 export const REVEAL_TIMINGS = Object.freeze({
-    wheels: 2500,
-    identity: 5000,
-    zodiac: 7500,
-    portrait: 10500,
-    complete: 14500
+    preparing: 3000,
+    zodiac: 7000,
+    planets: 11000,
+    romantic: 15000,
+    energy: 19000
 });
+
+export const REVEAL_STAGE_DURATIONS = Object.freeze([3000, 4000, 4000, 4000, 4000]);
 
 export const ZODIAC_SIGNS = Object.freeze([
     { name: 'Aries', start: [3, 21], end: [4, 19] },
@@ -93,19 +95,19 @@ export const validateRevealForm = (name, birthdate, today = new Date()) => {
 };
 
 export const getRevealPhaseAtElapsed = elapsed => {
-    if (elapsed >= REVEAL_TIMINGS.complete) {
+    if (elapsed >= REVEAL_TIMINGS.energy) {
         return 6;
     }
-    if (elapsed >= REVEAL_TIMINGS.portrait) {
+    if (elapsed >= REVEAL_TIMINGS.romantic) {
         return 5;
     }
-    if (elapsed >= REVEAL_TIMINGS.zodiac) {
+    if (elapsed >= REVEAL_TIMINGS.planets) {
         return 4;
     }
-    if (elapsed >= REVEAL_TIMINGS.identity) {
+    if (elapsed >= REVEAL_TIMINGS.zodiac) {
         return 3;
     }
-    if (elapsed >= REVEAL_TIMINGS.wheels) {
+    if (elapsed >= REVEAL_TIMINGS.preparing) {
         return 2;
     }
     return 1;

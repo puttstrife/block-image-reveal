@@ -5,6 +5,7 @@ import {
     getRevealPhaseAtElapsed,
     getTodayInputValue,
     getZodiacSign,
+    REVEAL_STAGE_DURATIONS,
     validateRevealForm
 } from './zodiac';
 
@@ -52,18 +53,22 @@ describe('date display and validation', () => {
 });
 
 describe('reveal phase timing', () => {
+    it('keeps all five stage durations configurable', () => {
+        expect(REVEAL_STAGE_DURATIONS).toEqual([3000, 4000, 4000, 4000, 4000]);
+    });
+
     it.each([
         [0, 1],
-        [2499, 1],
-        [2500, 2],
-        [4999, 2],
-        [5000, 3],
-        [7499, 3],
-        [7500, 4],
-        [10499, 4],
-        [10500, 5],
-        [14499, 5],
-        [14500, 6],
+        [2999, 1],
+        [3000, 2],
+        [6999, 2],
+        [7000, 3],
+        [10999, 3],
+        [11000, 4],
+        [14999, 4],
+        [15000, 5],
+        [18999, 5],
+        [19000, 6],
         [60000, 6]
     ])('returns phase %s at %sms', (elapsed, phase) => {
         expect(getRevealPhaseAtElapsed(elapsed)).toBe(phase);

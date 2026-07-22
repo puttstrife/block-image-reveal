@@ -298,6 +298,9 @@ select {
   left: 50%;
   width: min(74%, 720px);
   margin: 0;
+  padding: 0.28em 0.8em;
+  border-radius: 999px;
+  background: rgba(235, 232, 224, 0.86);
   color: rgba(40, 36, 31, 0.82);
   font-family: 'Snell Roundhand', 'Segoe Script', 'Bradley Hand', cursive;
   font-size: clamp(1.15rem, 4.1vw, 3.4rem);
@@ -306,8 +309,9 @@ select {
   line-height: 1.05;
   text-align: center;
   text-transform: none;
+  box-shadow: 0 0 26px 16px rgba(235, 232, 224, 0.68);
   transform: translate(-50%, -50%);
-  animation: generation-pulse 1.8s ease-in-out infinite;
+  animation: loading-copy-arrival 700ms ease-out both, generation-pulse 2.4s 700ms ease-in-out infinite;
 }
 
 .chart-geometry {
@@ -365,10 +369,14 @@ select {
   stroke-dashoffset: 2200;
 }
 
+.phase-2 .zodiac-orbit,
+.phase-3 .zodiac-orbit,
 .phase-4 .zodiac-orbit,
 .phase-5 .zodiac-orbit,
 .phase-6 .zodiac-orbit,
 .phase-7 .zodiac-orbit,
+.phase-2 .zodiac-tick,
+.phase-3 .zodiac-tick,
 .phase-4 .zodiac-tick,
 .phase-5 .zodiac-tick,
 .phase-6 .zodiac-tick,
@@ -381,7 +389,7 @@ select {
   z-index: 3;
   top: 50%;
   left: 50%;
-  width: min(78%, 790px);
+  width: min(76%, 770px);
   aspect-ratio: 1;
   opacity: 0;
   pointer-events: none;
@@ -389,9 +397,16 @@ select {
   transition: opacity 650ms ease, transform 900ms cubic-bezier(.2, .72, .22, 1);
 }
 
-.phase-2 .celestial-wheels {
+.phase-2 .celestial-wheels,
+.phase-3 .celestial-wheels,
+.phase-4 .celestial-wheels {
   opacity: 0.86;
   transform: translate(-50%, -50%) scale(1);
+}
+
+.phase-5 .celestial-wheels {
+  opacity: 0.22;
+  transform: translate(-50%, -50%) scale(1.015);
 }
 
 .celestial-wheel {
@@ -415,6 +430,188 @@ select {
 .celestial-wheel--center {
   animation: celestial-spin-clockwise 16s linear infinite;
 }
+
+.phase-3 .celestial-wheel--outer { animation-duration: 52s; }
+.phase-3 .celestial-wheel--middle { animation-duration: 46s; }
+.phase-3 .celestial-wheel--center { animation-duration: 40s; }
+.phase-4 .celestial-wheel--outer { animation-duration: 76s; }
+.phase-4 .celestial-wheel--middle { animation-duration: 68s; opacity: 0.32; }
+.phase-4 .celestial-wheel--center { animation-duration: 60s; opacity: 0.46; }
+.phase-5 .celestial-wheel { animation-play-state: paused; }
+
+.planet-map,
+.romantic-alignment,
+.energy-reading {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  width: min(58%, 590px);
+  aspect-ratio: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.phase-3 .planet-map {
+  opacity: 1;
+}
+
+.planet-map__lines,
+.romantic-alignment svg,
+.energy-pattern {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.planet-map__lines path {
+  fill: none;
+  stroke: rgba(183, 133, 31, 0.78);
+  stroke-width: 0.45;
+  stroke-dasharray: 180;
+  stroke-dashoffset: 180;
+  vector-effect: non-scaling-stroke;
+  animation: constellation-draw 3.2s 450ms ease-out forwards;
+}
+
+.planet-node {
+  position: absolute;
+  top: var(--planet-y);
+  left: var(--planet-x);
+  display: grid;
+  width: clamp(25px, 4.2vw, 45px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(206, 163, 70, 0.72);
+  border-radius: 50%;
+  background: rgba(238, 230, 207, 0.9);
+  color: #7e5b17;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(0.9rem, 2.4vw, 1.8rem);
+  opacity: 0.24;
+  box-shadow: 0 0 0 rgba(221, 171, 58, 0);
+  transform: translate(-50%, -50%) scale(0.82);
+  animation: planet-highlight 1.4s var(--planet-delay) ease-in-out both;
+}
+
+.phase-4 .romantic-alignment {
+  opacity: 1;
+}
+
+.romantic-alignment__line {
+  fill: none;
+  stroke: rgba(198, 143, 27, 0.9);
+  stroke-width: 0.7;
+  stroke-dasharray: 70;
+  stroke-dashoffset: 70;
+  vector-effect: non-scaling-stroke;
+  animation: romantic-line-draw 2.2s 400ms ease-out forwards;
+}
+
+.romantic-alignment__pulse {
+  fill: rgba(229, 182, 75, 0.62);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: calculated-pulse 2.2s 1.8s ease-in-out infinite;
+}
+
+.romantic-symbol {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  width: clamp(42px, 7vw, 74px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(205, 154, 48, 0.82);
+  border-radius: 50%;
+  background: rgba(238, 230, 207, 0.94);
+  color: #9a6a0a;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.35rem, 4vw, 3rem);
+  box-shadow: 0 0 18px rgba(218, 169, 58, 0.32);
+}
+
+.romantic-symbol--left {
+  left: 25%;
+  animation: romantic-left-arrival 1.3s ease-out both;
+}
+
+.romantic-symbol--right {
+  right: 25%;
+  animation: romantic-right-arrival 1.3s ease-out both;
+}
+
+.phase-5 .energy-reading {
+  opacity: 1;
+}
+
+.energy-pattern path,
+.energy-pattern__ring {
+  fill: none;
+  stroke: rgba(154, 111, 24, 0.72);
+  stroke-width: 0.55;
+  stroke-linecap: round;
+  stroke-dasharray: 150;
+  stroke-dashoffset: 150;
+  vector-effect: non-scaling-stroke;
+  animation: energy-line-draw 2.8s ease-out forwards;
+}
+
+.energy-pattern path:nth-of-type(2) { animation-delay: 180ms; }
+.energy-pattern path:nth-of-type(3) { animation-delay: 360ms; }
+.energy-pattern path:nth-of-type(4) { animation-delay: 540ms; }
+.energy-pattern path:nth-of-type(5) { animation-delay: 720ms; }
+
+.energy-pattern__core {
+  fill: rgba(221, 171, 58, 0.65);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: energy-core-pulse 2.4s 2.2s ease-in-out infinite;
+}
+
+.moon-phase {
+  position: absolute;
+  top: var(--moon-y);
+  left: var(--moon-x);
+  width: clamp(9px, 1.7vw, 17px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(126, 101, 54, 0.68);
+  border-radius: 50%;
+  background: linear-gradient(90deg, rgba(126, 101, 54, 0.75) var(--moon-fill, 50%), rgba(238, 230, 207, 0.74) var(--moon-fill, 50%));
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.72);
+  animation: moon-arrival 700ms var(--moon-delay) ease-out forwards;
+}
+
+.moon-phase--1 { --moon-x: 50%; --moon-y: 8%; --moon-fill: 100%; --moon-delay: 150ms; }
+.moon-phase--2 { --moon-x: 80%; --moon-y: 20%; --moon-fill: 75%; --moon-delay: 280ms; }
+.moon-phase--3 { --moon-x: 92%; --moon-y: 50%; --moon-fill: 50%; --moon-delay: 410ms; }
+.moon-phase--4 { --moon-x: 80%; --moon-y: 80%; --moon-fill: 25%; --moon-delay: 540ms; }
+.moon-phase--5 { --moon-x: 50%; --moon-y: 92%; --moon-fill: 0%; --moon-delay: 670ms; }
+.moon-phase--6 { --moon-x: 20%; --moon-y: 80%; --moon-fill: 25%; --moon-delay: 800ms; }
+.moon-phase--7 { --moon-x: 8%; --moon-y: 50%; --moon-fill: 50%; --moon-delay: 930ms; }
+.moon-phase--8 { --moon-x: 20%; --moon-y: 20%; --moon-fill: 75%; --moon-delay: 1060ms; }
+
+.element-mark {
+  position: absolute;
+  color: rgba(74, 64, 49, 0.7);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(0.58rem, 1.4vw, 0.95rem);
+  font-variant: small-caps;
+  letter-spacing: 0.12em;
+  opacity: 0;
+  animation: element-arrival 700ms 1.2s ease-out forwards;
+}
+
+.element-mark--fire { top: 6%; left: 50%; transform: translateX(-50%); }
+.element-mark--earth { top: 50%; right: 3%; transform: translateY(-50%); }
+.element-mark--air { bottom: 6%; left: 50%; transform: translateX(-50%); }
+.element-mark--water { top: 50%; left: 3%; transform: translateY(-50%); }
 
 .identity-inscription {
   position: absolute;
@@ -587,7 +784,6 @@ select {
   pointer-events: none;
 }
 
-.phase-5 .portrait-grid,
 .phase-6 .portrait-grid,
 .phase-7 .portrait-grid {
   opacity: 1;
@@ -609,13 +805,8 @@ select {
   transform: scale(1.03);
 }
 
-.phase-5 .portrait-grid__image {
-  animation: portrait-arrival 3.8s ease-out forwards;
-}
-
 .phase-6 .portrait-grid__image {
-  opacity: 1;
-  transform: scale(1.03);
+  animation: portrait-arrival 3.8s ease-out forwards;
 }
 
 .phase-7 .portrait-grid__image {
@@ -685,14 +876,8 @@ select {
 .portrait-tile:nth-child(7),
 .portrait-tile:nth-child(10) { left: calc(200% / 3); }
 
-.phase-5 .portrait-tile {
-  animation: tile-reveal 2.5s var(--tile-delay) cubic-bezier(.2, .72, .22, 1) forwards;
-}
-
 .phase-6 .portrait-tile {
-  opacity: 1;
-  filter: brightness(1);
-  transform: scale(1);
+  animation: tile-reveal 2.5s var(--tile-delay) cubic-bezier(.2, .72, .22, 1) forwards;
 }
 
 .phase-7 .portrait-tile {
@@ -772,12 +957,68 @@ select {
   50% { opacity: 0.92; }
 }
 
+@keyframes loading-copy-arrival {
+  from { opacity: 0; transform: translate(-50%, -44%) scale(0.98); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
 @keyframes celestial-spin-clockwise {
   to { transform: rotate(360deg); }
 }
 
 @keyframes celestial-spin-counterclockwise {
   to { transform: rotate(-360deg); }
+}
+
+@keyframes constellation-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes planet-highlight {
+  0% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.82); }
+  42%, 74% {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(221, 171, 58, 0.55);
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  100% { opacity: 0.58; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes romantic-line-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes calculated-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.78); }
+  50% { opacity: 0.78; transform: scale(1.28); }
+}
+
+@keyframes romantic-left-arrival {
+  from { opacity: 0; transform: translate(-80%, -50%) scale(0.82); }
+  to { opacity: 1; transform: translate(-35%, -50%) scale(1); }
+}
+
+@keyframes romantic-right-arrival {
+  from { opacity: 0; transform: translate(80%, -50%) scale(0.82); }
+  to { opacity: 1; transform: translate(35%, -50%) scale(1); }
+}
+
+@keyframes energy-line-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes energy-core-pulse {
+  0%, 100% { opacity: 0.26; transform: scale(0.72); }
+  50% { opacity: 0.82; transform: scale(1.35); }
+}
+
+@keyframes moon-arrival {
+  to { opacity: 0.72; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes element-arrival {
+  from { opacity: 0; }
+  to { opacity: 0.66; }
 }
 
 @keyframes draw-chart {
@@ -846,6 +1087,12 @@ select {
   }
 }
 
+.animations-paused *,
+.animations-paused *::before,
+.animations-paused *::after {
+  animation-play-state: paused !important;
+}
+
 @media (max-width: 620px) {
   .reveal-shell {
     padding: 8px;
@@ -857,6 +1104,16 @@ select {
 
   .portrait-grid {
     width: 70%;
+  }
+
+  .celestial-wheels {
+    width: 80%;
+  }
+
+  .planet-map,
+  .romantic-alignment,
+  .energy-reading {
+    width: 64%;
   }
 
   .unlock-reveal {
