@@ -441,6 +441,8 @@ select {
 .celestial-wheel {
   --wheel-scale: 1;
   --wheel-progress: 0deg;
+  --wheel-art-x: 0%;
+  --wheel-art-y: 0%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -449,24 +451,39 @@ select {
   height: 100%;
   -webkit-mask-image: conic-gradient(from -90deg, #000 0deg var(--wheel-progress), transparent var(--wheel-progress) 360deg);
   mask-image: conic-gradient(from -90deg, #000 0deg var(--wheel-progress), transparent var(--wheel-progress) 360deg);
-  object-fit: contain;
   opacity: 0;
   transform-origin: center;
   will-change: transform;
 }
 
+.celestial-wheel__art {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: translate(var(--wheel-art-x), var(--wheel-art-y));
+}
+
 .celestial-wheel--outer {
   --wheel-scale: 1;
+  --wheel-art-x: -0.08%;
+  --wheel-art-y: 2.23%;
   animation: celestial-spin-clockwise 30s linear infinite;
 }
 
 .celestial-wheel--middle {
   --wheel-scale: 0.89;
+  --wheel-art-x: 0.04%;
+  --wheel-art-y: 1.71%;
   animation: celestial-spin-counterclockwise 22s linear infinite;
 }
 
 .celestial-wheel--center {
   --wheel-scale: 0.58;
+  --wheel-art-x: 0.04%;
+  --wheel-art-y: 0.8%;
   animation: celestial-spin-clockwise 16s linear infinite;
 }
 

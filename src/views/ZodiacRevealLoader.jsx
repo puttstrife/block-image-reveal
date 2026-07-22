@@ -46,9 +46,15 @@ const PLANET_NODES = [
 
 const ZodiacWheelLayers = () => (
     <div className='celestial-wheels' aria-hidden='true'>
-        <img className='celestial-wheel celestial-wheel--outer' src='/block-image-reveal/images/celestial-wheels/outer.png' alt='' />
-        <img className='celestial-wheel celestial-wheel--middle' src='/block-image-reveal/images/celestial-wheels/middle.png' alt='' />
-        <img className='celestial-wheel celestial-wheel--center' src='/block-image-reveal/images/celestial-wheels/center.png' alt='' />
+        <span className='celestial-wheel celestial-wheel--outer'>
+            <img className='celestial-wheel__art' src='/block-image-reveal/images/celestial-wheels/outer.png' alt='' />
+        </span>
+        <span className='celestial-wheel celestial-wheel--middle'>
+            <img className='celestial-wheel__art' src='/block-image-reveal/images/celestial-wheels/middle.png' alt='' />
+        </span>
+        <span className='celestial-wheel celestial-wheel--center'>
+            <img className='celestial-wheel__art' src='/block-image-reveal/images/celestial-wheels/center.png' alt='' />
+        </span>
     </div>
 );
 
