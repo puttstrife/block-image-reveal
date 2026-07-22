@@ -436,7 +436,8 @@ select {
   background: rgba(235, 232, 224, 0.94);
   color: #4b443a;
   font-family: 'Snell Roundhand', 'Segoe Script', 'Bradley Hand', cursive;
-  font-size: clamp(0.56rem, 1.25vw, 1.02rem);
+  font-size: clamp(0.7rem, 1.55vw, 1.3rem);
+  font-weight: 600;
   line-height: 1;
   text-align: center;
   box-shadow: 0 0 10px 6px rgba(235, 232, 224, 0.84);
@@ -471,7 +472,8 @@ select {
   background: rgba(235, 232, 224, 0.88);
   color: rgba(53, 49, 43, 0.9);
   font-family: 'Snell Roundhand', 'Segoe Script', 'Bradley Hand', cursive;
-  font-size: clamp(0.72rem, 1.9vw, 1.55rem);
+  font-size: clamp(0.9rem, 2.2vw, 1.85rem);
+  font-weight: 600;
   opacity: 0;
   box-shadow: 0 0 9px 5px rgba(235, 232, 224, 0.72);
   white-space: nowrap;
@@ -519,7 +521,8 @@ select {
   background: rgba(235, 232, 224, 0.92);
   color: #a66f08;
   font-family: 'Snell Roundhand', 'Segoe Script', cursive;
-  font-size: clamp(0.8rem, 2.4vw, 1.8rem);
+  font-size: clamp(1.1rem, 2.8vw, 2.2rem);
+  font-weight: 600;
   opacity: 0;
   box-shadow: 0 0 12px 7px rgba(235, 232, 224, 0.78);
   transform: translate(-50%, -8px);
@@ -821,11 +824,11 @@ select {
   .zodiac-name {
     min-width: 38px;
     padding-inline: 0.25em;
-    font-size: clamp(0.48rem, 2vw, 0.7rem);
+    font-size: clamp(0.58rem, 2.35vw, 0.82rem);
   }
 
   .house-note {
-    font-size: clamp(0.58rem, 2.6vw, 0.82rem);
+    font-size: clamp(0.68rem, 2.9vw, 0.95rem);
   }
 }
 
