@@ -562,6 +562,9 @@ select {
   stroke-dasharray: 180;
   stroke-dashoffset: 180;
   vector-effect: non-scaling-stroke;
+}
+
+.phase-3 .planet-map__lines path {
   animation: constellation-draw 1.35s 2.5s ease-out forwards;
 }
 
@@ -582,6 +585,9 @@ select {
   opacity: 0.1;
   box-shadow: 0 0 0 rgba(221, 171, 58, 0);
   transform: translate(-50%, -50%) scale(0.82);
+}
+
+.phase-3 .planet-node {
   animation: planet-highlight 620ms var(--planet-delay) ease-in-out both;
 }
 
@@ -1070,13 +1076,13 @@ select {
 }
 
 @keyframes planet-highlight {
-  0% { opacity: 0.08; transform: translate(-50%, -50%) scale(0.82); }
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.82); }
   24%, 68% {
     opacity: 1;
     box-shadow: 0 0 20px rgba(221, 171, 58, 0.55);
     transform: translate(-50%, -50%) scale(1.08);
   }
-  100% { opacity: 0.12; transform: translate(-50%, -50%) scale(0.94); }
+  100% { opacity: 0.42; transform: translate(-50%, -50%) scale(0.94); }
 }
 
 @keyframes romantic-line-draw {
