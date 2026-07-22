@@ -1,3 +1,9 @@
+@property --wheel-progress {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 :root {
   color: #f8f6f2;
   background: #100e1b;
@@ -320,6 +326,11 @@ select {
   z-index: 1;
   width: 100%;
   height: 100%;
+  transition: opacity 650ms ease;
+}
+
+.phase-2 .chart-geometry {
+  opacity: 0;
 }
 
 .paper-noise {
@@ -429,11 +440,15 @@ select {
 
 .celestial-wheel {
   --wheel-scale: 1;
+  --wheel-progress: 0deg;
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
   display: block;
   width: 100%;
   height: 100%;
+  -webkit-mask-image: conic-gradient(from -90deg, #000 0deg var(--wheel-progress), transparent var(--wheel-progress) 360deg);
+  mask-image: conic-gradient(from -90deg, #000 0deg var(--wheel-progress), transparent var(--wheel-progress) 360deg);
   object-fit: contain;
   opacity: 0;
   transform-origin: center;
@@ -456,30 +471,42 @@ select {
 }
 
 .phase-2 .celestial-wheel--outer {
-  animation: celestial-spin-clockwise 30s linear infinite, wheel-layer-arrival 700ms ease-out forwards;
+  animation: celestial-spin-clockwise 30s linear infinite, wheel-line-reveal 850ms ease-out forwards;
 }
 
 .phase-2 .celestial-wheel--middle {
-  animation: celestial-spin-counterclockwise 22s linear infinite, wheel-layer-arrival 700ms 850ms ease-out forwards;
+  animation: celestial-spin-counterclockwise 22s linear infinite, wheel-line-reveal 850ms 950ms ease-out both;
 }
 
 .phase-2 .celestial-wheel--center {
-  animation: celestial-spin-clockwise 16s linear infinite, wheel-layer-arrival 700ms 1.7s ease-out forwards;
+  animation: celestial-spin-clockwise 16s linear infinite, wheel-line-reveal 850ms 1.9s ease-out both;
 }
 
-.phase-3 .celestial-wheel,
-.phase-5 .celestial-wheel {
+.phase-3 .celestial-wheel--outer,
+.phase-4 .celestial-wheel--outer,
+.phase-5 .celestial-wheel--outer {
+  --wheel-progress: 360deg;
   opacity: 1;
 }
 
 .phase-4 .celestial-wheel--outer { opacity: 0.72; }
 
 .phase-3 .celestial-wheel--outer { animation-duration: 52s; }
-.phase-3 .celestial-wheel--middle { animation-duration: 46s; }
-.phase-3 .celestial-wheel--center { animation-duration: 40s; }
+.phase-3 .celestial-wheel--middle {
+  --wheel-progress: 360deg;
+  opacity: 1;
+  animation: celestial-spin-counterclockwise 46s linear infinite, wheel-line-remove 850ms 850ms ease-in forwards;
+}
+.phase-3 .celestial-wheel--center {
+  --wheel-progress: 360deg;
+  opacity: 1;
+  animation: celestial-spin-clockwise 40s linear infinite, wheel-line-remove 850ms ease-in forwards;
+}
 .phase-4 .celestial-wheel--outer { animation-duration: 76s; }
-.phase-4 .celestial-wheel--middle { animation-duration: 68s; opacity: 0.2; }
-.phase-4 .celestial-wheel--center { animation-duration: 60s; opacity: 0.22; }
+.phase-4 .celestial-wheel--middle,
+.phase-4 .celestial-wheel--center,
+.phase-5 .celestial-wheel--middle,
+.phase-5 .celestial-wheel--center { opacity: 0; }
 .phase-5 .celestial-wheel { animation-play-state: paused; }
 
 .planet-map,
@@ -1006,18 +1033,23 @@ select {
 }
 
 @keyframes celestial-spin-clockwise {
-  from { transform: rotate(0deg) scale(var(--wheel-scale)); }
-  to { transform: rotate(360deg) scale(var(--wheel-scale)); }
+  from { transform: translate(-50%, -50%) rotate(0deg) scale(var(--wheel-scale)); }
+  to { transform: translate(-50%, -50%) rotate(360deg) scale(var(--wheel-scale)); }
 }
 
 @keyframes celestial-spin-counterclockwise {
-  from { transform: rotate(0deg) scale(var(--wheel-scale)); }
-  to { transform: rotate(-360deg) scale(var(--wheel-scale)); }
+  from { transform: translate(-50%, -50%) rotate(0deg) scale(var(--wheel-scale)); }
+  to { transform: translate(-50%, -50%) rotate(-360deg) scale(var(--wheel-scale)); }
 }
 
-@keyframes wheel-layer-arrival {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes wheel-line-reveal {
+  from { --wheel-progress: 0deg; opacity: 0.25; }
+  to { --wheel-progress: 360deg; opacity: 1; }
+}
+
+@keyframes wheel-line-remove {
+  from { --wheel-progress: 360deg; opacity: 1; }
+  to { --wheel-progress: 0deg; opacity: 0; }
 }
 
 @keyframes constellation-draw {
