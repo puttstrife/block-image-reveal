@@ -335,6 +335,11 @@ select {
   opacity: 0;
 }
 
+.phase-5 .chart-geometry {
+  transform-origin: center;
+  animation: energy-geometry-breathe 8s ease-in-out infinite;
+}
+
 .paper-noise {
   opacity: 0.12;
   filter: url('#paper-noise');
@@ -673,6 +678,12 @@ select {
 
 .phase-5 .energy-reading {
   opacity: 1;
+}
+
+.phase-5 .energy-pattern {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: energy-pattern-revolve 26s linear infinite;
 }
 
 .energy-pattern path,
@@ -1189,6 +1200,15 @@ select {
   to { stroke-dashoffset: 0; }
 }
 
+@keyframes energy-geometry-breathe {
+  0%, 100% { opacity: 0.82; transform: scale(0.996); }
+  50% { opacity: 1; transform: scale(1.008); }
+}
+
+@keyframes energy-pattern-revolve {
+  to { transform: rotate(360deg); }
+}
+
 @keyframes energy-core-pulse {
   0%, 100% { opacity: 0.26; transform: scale(0.72); }
   50% { opacity: 0.82; transform: scale(1.35); }
@@ -1331,5 +1351,11 @@ select {
   .phase-7 .celestial-wheel--middle {
     animation: none !important;
     transform: translate(-50%, -50%) scale(var(--wheel-scale));
+  }
+
+  .phase-5 .chart-geometry,
+  .phase-5 .energy-pattern {
+    animation: none !important;
+    transform: none;
   }
 }
