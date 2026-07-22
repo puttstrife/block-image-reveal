@@ -11,7 +11,7 @@ import {
 import './ZodiacRevealLoader.css';
 
 const tileRevealOrder = [0, 6, 2, 4, 8, 1, 5, 3, 7];
-const tileBlurLevels = [5, 12, 7, 15, 9, 18, 6, 14, 8];
+const tileBlurLevels = [8, 14, 10, 16, 28, 18, 9, 15, 11];
 const portraitUrl = `${import.meta.env.BASE_URL}images/img19.jpg`;
 
 const phaseLabels = {
