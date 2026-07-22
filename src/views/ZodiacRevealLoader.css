@@ -424,13 +424,16 @@ select {
   top: var(--sign-y);
   left: var(--sign-x);
   min-width: clamp(42px, 7vw, 82px);
-  padding: 0.16em 0.42em;
+  z-index: 2;
+  padding: 0.28em 0.52em;
   border-block: 1px solid rgba(92, 80, 59, 0.42);
+  background: rgba(235, 232, 224, 0.94);
   color: #4b443a;
   font-family: 'Snell Roundhand', 'Segoe Script', 'Bradley Hand', cursive;
   font-size: clamp(0.56rem, 1.25vw, 1.02rem);
   line-height: 1;
   text-align: center;
+  box-shadow: 0 0 10px 6px rgba(235, 232, 224, 0.84);
   opacity: 0;
   transform: translate(-50%, -50%) rotate(var(--sign-rotation)) scale(0.82);
 }
@@ -455,10 +458,14 @@ select {
 
 .house-note {
   position: absolute;
+  z-index: 1;
+  padding: 0.12em 0.38em;
+  background: rgba(235, 232, 224, 0.88);
   color: rgba(53, 49, 43, 0.9);
   font-family: 'Snell Roundhand', 'Segoe Script', 'Bradley Hand', cursive;
   font-size: clamp(0.72rem, 1.9vw, 1.55rem);
   opacity: 0;
+  box-shadow: 0 0 9px 5px rgba(235, 232, 224, 0.72);
   white-space: nowrap;
 }
 
@@ -468,38 +475,43 @@ select {
 }
 
 .house-note--northwest {
-  top: 19%;
-  left: 18%;
+  top: 11%;
+  left: 10%;
   transform: rotate(-49deg);
 }
 
 .house-note--northeast {
-  top: 19%;
-  right: 19%;
+  top: 11%;
+  right: 10%;
   transform: rotate(49deg);
 }
 
 .house-note--southwest {
-  bottom: 18%;
-  left: 17%;
+  bottom: 10%;
+  left: 10%;
   transform: rotate(48deg);
 }
 
 .house-note--southeast {
-  right: 17%;
-  bottom: 18%;
+  right: 10%;
+  bottom: 10%;
   transform: rotate(-48deg);
 }
 
 .sun-sign-label {
   position: absolute;
-  top: 14%;
+  z-index: 3;
+  top: 24%;
   left: 50%;
   margin: 0;
+  padding: 0.18em 0.65em;
+  border-radius: 999px;
+  background: rgba(235, 232, 224, 0.92);
   color: #a66f08;
   font-family: 'Snell Roundhand', 'Segoe Script', cursive;
   font-size: clamp(0.8rem, 2.4vw, 1.8rem);
   opacity: 0;
+  box-shadow: 0 0 12px 7px rgba(235, 232, 224, 0.78);
   transform: translate(-50%, -8px);
 }
 
