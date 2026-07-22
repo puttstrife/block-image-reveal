@@ -159,9 +159,9 @@ const ZodiacRevealLoader = () => {
         return (
             <main className='reveal-shell reveal-shell--form'>
                 <section className='identity-card' aria-labelledby='identity-title'>
-                    <p className='identity-card__eyebrow'>Your soul sketch awaits</p>
-                    <h1 id='identity-title'>Let's Get to Know You</h1>
-                    <p className='identity-card__intro'>Your birth chart is unique to you. We need a few details to read it accurately.</p>
+                    <p className='identity-card__eyebrow'>Astrolover Sketch</p>
+                    <h1 id='identity-title'>See Your Soulmate's Face</h1>
+                    <p className='identity-card__intro'>Enter your details and we'll decode your chart.</p>
                     <form className='identity-form' onSubmit={beginReveal} noValidate>
                         <div className='form-field'>
                             <label htmlFor='reveal-name'>First name</label>

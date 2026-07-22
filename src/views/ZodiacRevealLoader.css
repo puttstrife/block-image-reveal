@@ -63,24 +63,29 @@ select {
 .identity-card__eyebrow {
   margin: 0 0 12px;
   color: var(--brand-gold);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.24em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-align: center;
   text-transform: uppercase;
 }
 
 .identity-card h1 {
   margin: 0;
   color: var(--brand-cream);
-  font-size: clamp(1.75rem, 5vw, 2.45rem);
-  font-weight: 600;
-  letter-spacing: -0.04em;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  text-align: center;
 }
 
 .identity-card__intro {
   margin: 14px 0 30px;
   color: var(--brand-muted);
   line-height: 1.55;
+  text-align: center;
 }
 
 .identity-form {
