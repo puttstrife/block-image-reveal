@@ -1,4 +1,4 @@
-# Zodiac Portrait Reveal
+# Block Image Reveal
 
 A responsive, four-stage celestial portrait reveal built with React and Vite.
 
