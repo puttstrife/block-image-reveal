@@ -11,6 +11,7 @@ import {
 import './ZodiacRevealLoader.css';
 
 const tileRevealOrder = [0, 6, 2, 4, 8, 1, 5, 3, 7];
+const tileBlurLevels = [5, 12, 7, 15, 9, 18, 6, 14, 8];
 const portraitUrl = `${import.meta.env.BASE_URL}images/img19.jpg`;
 
 const phaseLabels = {
@@ -174,22 +175,17 @@ const ZodiacRevealLoader = () => {
                 <div
                     className='portrait-grid'
                     aria-label={`Frosted portrait of ${submittedData.name}`}
-                    style={{ '--portrait-url': `url("${portraitUrl}")` }}
                 >
+                    <img className='portrait-grid__image' src={portraitUrl} alt='' aria-hidden='true' />
                     {Array.from({ length: 9 }, (_, index) => {
-                        const row = Math.floor(index / 3);
-                        const column = index % 3;
                         const revealIndex = tileRevealOrder.indexOf(index);
                         const tileStyle = {
-                            '--portrait-x': `${column * 50}%`,
-                            '--portrait-y': `${row * 50}%`,
-                            '--tile-delay': `${revealIndex * 180}ms`
+                            '--tile-delay': `${revealIndex * 180}ms`,
+                            '--tile-blur': `${tileBlurLevels[index]}px`,
+                            '--frost-opacity': 0.24 + (tileBlurLevels[index] / 100)
                         };
                         return (
-                            <span className='portrait-tile' key={index} style={tileStyle}>
-                                <span className='portrait-tile__image' />
-                                <span className='portrait-tile__frost' />
-                            </span>
+                            <span className='portrait-tile' key={index} style={tileStyle} aria-hidden='true' />
                         );
                     })}
                 </div>
