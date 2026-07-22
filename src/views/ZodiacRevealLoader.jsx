@@ -211,21 +211,13 @@ const ZodiacRevealLoader = () => {
             soulmatePreference
         };
 
-        const generateWithRetry = async () => {
-            try {
-                return await requestGeneratedPortrait(generationInput, { signal: controller.signal });
-            } catch (error) {
-                if (controller.signal.aborted) {
-                    throw error;
-                }
-                return requestGeneratedPortrait(generationInput, { signal: controller.signal });
-            }
-        };
-
         const generationState = { status: 'pending' };
         const generationTask = (async () => {
             try {
-                const generatedPortraitUrl = await generateWithRetry();
+                const generatedPortraitUrl = await requestGeneratedPortrait(
+                    generationInput,
+                    { signal: controller.signal }
+                );
                 await preloadPortrait(generatedPortraitUrl);
                 if (revealRun.current !== runId) return;
                 generationState.status = 'ready';
