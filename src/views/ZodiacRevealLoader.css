@@ -330,7 +330,8 @@ select {
 }
 
 .phase-2 .chart-geometry,
-.phase-3 .chart-geometry {
+.phase-3 .chart-geometry,
+.phase-4 .chart-geometry {
   opacity: 0;
 }
 
@@ -430,8 +431,8 @@ select {
 }
 
 .phase-4 .celestial-wheels {
-  opacity: 0.3;
-  transform: translate(-50%, -50%) scale(1);
+  opacity: 0;
+  visibility: hidden;
 }
 
 .phase-5 .celestial-wheels {
@@ -500,15 +501,11 @@ select {
   animation: celestial-spin-clockwise 16s linear infinite, wheel-line-reveal 850ms 1.9s ease-out both;
 }
 
-.phase-4 .celestial-wheel--outer,
 .phase-5 .celestial-wheel--outer {
   --wheel-progress: 360deg;
   opacity: 1;
 }
 
-.phase-4 .celestial-wheel--outer { opacity: 0.72; }
-
-.phase-4 .celestial-wheel--outer { animation-duration: 76s; }
 .phase-4 .celestial-wheel--middle,
 .phase-4 .celestial-wheel--center,
 .phase-5 .celestial-wheel--middle,
@@ -583,6 +580,10 @@ select {
   opacity: 1;
 }
 
+.phase-4 .generation-status {
+  top: 36%;
+}
+
 .romantic-alignment__line {
   fill: none;
   stroke: rgba(198, 143, 27, 0.9);
@@ -590,6 +591,9 @@ select {
   stroke-dasharray: 70;
   stroke-dashoffset: 70;
   vector-effect: non-scaling-stroke;
+}
+
+.phase-4 .romantic-alignment__line {
   animation: romantic-line-draw 2.2s 400ms ease-out forwards;
 }
 
@@ -598,6 +602,9 @@ select {
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
+}
+
+.phase-4 .romantic-alignment__pulse {
   animation: calculated-pulse 2.2s 1.8s ease-in-out infinite;
 }
 
@@ -619,11 +626,17 @@ select {
 
 .romantic-symbol--left {
   left: 25%;
+}
+
+.phase-4 .romantic-symbol--left {
   animation: romantic-left-arrival 1.3s ease-out both;
 }
 
 .romantic-symbol--right {
   right: 25%;
+}
+
+.phase-4 .romantic-symbol--right {
   animation: romantic-right-arrival 1.3s ease-out both;
 }
 
@@ -764,7 +777,6 @@ select {
   transform: translate(-50%, -50%) rotate(var(--sign-rotation)) scale(0.82);
 }
 
-.phase-4 .zodiac-name,
 .phase-5 .zodiac-name,
 .phase-6 .zodiac-name,
 .phase-7 .zodiac-name {
@@ -798,7 +810,6 @@ select {
   white-space: nowrap;
 }
 
-.phase-4 .house-note,
 .phase-5 .house-note,
 .phase-6 .house-note,
 .phase-7 .house-note {
@@ -845,10 +856,6 @@ select {
   opacity: 0;
   box-shadow: 0 0 12px 7px rgba(235, 232, 224, 0.78);
   transform: translate(-50%, -8px);
-}
-
-.phase-4 .sun-sign-label {
-  animation: label-arrival 900ms 1.15s ease-out forwards;
 }
 
 .portrait-grid {
