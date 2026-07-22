@@ -124,23 +124,30 @@ const ZodiacRevealLoader = () => {
                         <filter id='paper-noise'>
                             <feTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch' />
                         </filter>
+                        <mask id='zodiac-corners'>
+                            <rect width='1000' height='850' fill='white' />
+                            <path d='M500 78 L850 425 L500 772 L150 425 Z' fill='black' />
+                        </mask>
                     </defs>
                     <rect className='paper-noise' width='1000' height='850' />
                     <rect className='chart-line chart-line--frame' x='55' y='48' width='890' height='754' />
                     <path className='chart-line chart-line--diamond' d='M500 78 L850 425 L500 772 L150 425 Z' />
                     <circle className='chart-line chart-line--circle' cx='500' cy='425' r='188' />
                     <path className='chart-line chart-line--axis' d='M55 425 H945 M500 48 V802 M250 175 L750 675 M750 175 L250 675' />
-                    <circle className='zodiac-orbit zodiac-orbit--outer' cx='500' cy='425' r='337' />
-                    <circle className='zodiac-orbit zodiac-orbit--inner' cx='500' cy='425' r='292' />
-                    {ZODIAC_SIGNS.map((sign, index) => {
-                        const angle = index * 30 - 90;
-                        const radians = angle * Math.PI / 180;
-                        const x1 = 500 + Math.cos(radians) * 292;
-                        const y1 = 425 + Math.sin(radians) * 292;
-                        const x2 = 500 + Math.cos(radians) * 337;
-                        const y2 = 425 + Math.sin(radians) * 337;
-                        return <line className='zodiac-tick' key={sign.name} x1={x1} y1={y1} x2={x2} y2={y2} />;
-                    })}
+                    <g className='zodiac-ring' mask='url(#zodiac-corners)'>
+                        <circle className='zodiac-orbit zodiac-orbit--outer' cx='500' cy='425' r='337' />
+                        <circle className='zodiac-orbit zodiac-orbit--middle' cx='500' cy='425' r='315' />
+                        <circle className='zodiac-orbit zodiac-orbit--inner' cx='500' cy='425' r='292' />
+                        {ZODIAC_SIGNS.map((sign, index) => {
+                            const angle = index * 30 - 90;
+                            const radians = angle * Math.PI / 180;
+                            const x1 = 500 + Math.cos(radians) * 292;
+                            const y1 = 425 + Math.sin(radians) * 292;
+                            const x2 = 500 + Math.cos(radians) * 337;
+                            const y2 = 425 + Math.sin(radians) * 337;
+                            return <line className='zodiac-tick' key={sign.name} x1={x1} y1={y1} x2={x2} y2={y2} />;
+                        })}
+                    </g>
                 </svg>
 
                 <div className='identity-inscription' aria-hidden={phase >= 3}>
@@ -148,28 +155,35 @@ const ZodiacRevealLoader = () => {
                     <p className='inscribed-date'>{formatBirthdate(submittedData.birthdate)}</p>
                 </div>
 
-                <div className='zodiac-symbols' aria-label={`Sun sign: ${sunSign.name}`}>
+                <div className='zodiac-labels' aria-label={`Sun sign: ${sunSign.name}`}>
                     {ZODIAC_SIGNS.map((sign, index) => {
                         const angle = index * 30 - 90;
                         const radians = angle * Math.PI / 180;
+                        const labelRotations = [0, 30, 60, -90, -60, -30, 0, 30, 60, -90, -60, -30];
                         const position = {
-                            '--sign-x': `${50 + Math.cos(radians) * 37}%`,
-                            '--sign-y': `${50 + Math.sin(radians) * 41}%`,
-                            '--sign-delay': `${index * 70}ms`
+                            '--sign-x': `${50 + Math.cos(radians) * 35.7}%`,
+                            '--sign-y': `${50 + Math.sin(radians) * 39.5}%`,
+                            '--sign-delay': `${index * 70}ms`,
+                            '--sign-rotation': `${labelRotations[index]}deg`
                         };
                         return (
                             <span
-                                className={`zodiac-symbol ${sign.name === sunSign.name ? 'zodiac-symbol--active' : ''}`}
+                                className={`zodiac-name ${sign.name === sunSign.name ? 'zodiac-name--active' : ''}`}
                                 key={sign.name}
                                 style={position}
-                                title={sign.name}
+                                aria-current={sign.name === sunSign.name ? 'true' : undefined}
                             >
-                                <span aria-hidden='true'>{sign.symbol}</span>
-                                <span className='sr-only'>{sign.name}</span>
+                                {sign.name}
                             </span>
                         );
                     })}
-                    <p className='sun-sign-label'>{sunSign.symbol} {sunSign.name}</p>
+                    <div className='zodiac-house-notes' aria-hidden='true'>
+                        <span className='house-note house-note--northwest'>Tenth House</span>
+                        <span className='house-note house-note--northeast'>First House</span>
+                        <span className='house-note house-note--southwest'>Seventh House</span>
+                        <span className='house-note house-note--southeast'>Fourth House</span>
+                    </div>
+                    <p className='sun-sign-label'>{sunSign.name} · Sun sign</p>
                 </div>
 
                 <div

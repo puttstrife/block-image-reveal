@@ -270,44 +270,88 @@ input {
   font-size: clamp(1rem, 3.3vw, 2.7rem);
 }
 
-.zodiac-symbols {
+.zodiac-labels {
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
 }
 
-.zodiac-symbol {
+.zodiac-name {
   position: absolute;
   top: var(--sign-y);
   left: var(--sign-x);
-  display: grid;
-  width: clamp(24px, 4.5vw, 52px);
-  aspect-ratio: 1;
-  place-items: center;
-  border: 1px solid transparent;
-  border-radius: 50%;
-  color: #4f493f;
-  font-size: clamp(1rem, 3.2vw, 2.5rem);
+  min-width: clamp(42px, 7vw, 82px);
+  padding: 0.16em 0.42em;
+  border-block: 1px solid rgba(92, 80, 59, 0.42);
+  color: #4b443a;
+  font-family: 'Snell Roundhand', 'Segoe Script', 'Bradley Hand', cursive;
+  font-size: clamp(0.56rem, 1.25vw, 1.02rem);
+  line-height: 1;
+  text-align: center;
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.5) rotate(-10deg);
+  transform: translate(-50%, -50%) rotate(var(--sign-rotation)) scale(0.82);
 }
 
-.phase-3 .zodiac-symbol,
-.phase-4 .zodiac-symbol {
+.phase-3 .zodiac-name,
+.phase-4 .zodiac-name {
   animation: sign-arrival 800ms calc(var(--sign-delay) + 250ms) ease-out forwards;
 }
 
-.zodiac-symbol--active {
-  border-color: rgba(159, 111, 33, 0.55);
-  background: radial-gradient(circle, rgba(255, 222, 132, 0.54), transparent 68%);
+.zodiac-name--active {
+  border-color: rgba(159, 111, 33, 0.8);
+  background: rgba(255, 229, 160, 0.36);
   color: #9c6c20;
-  box-shadow: 0 0 24px rgba(211, 158, 58, 0.34);
+  box-shadow: 0 0 18px rgba(211, 158, 58, 0.26);
+  font-weight: 700;
+}
+
+.zodiac-house-notes {
+  position: absolute;
+  inset: 0;
+}
+
+.house-note {
+  position: absolute;
+  color: rgba(53, 49, 43, 0.9);
+  font-family: 'Snell Roundhand', 'Segoe Script', 'Bradley Hand', cursive;
+  font-size: clamp(0.72rem, 1.9vw, 1.55rem);
+  opacity: 0;
+  white-space: nowrap;
+}
+
+.phase-3 .house-note,
+.phase-4 .house-note {
+  animation: handwritten-note 900ms 1.1s ease-out forwards;
+}
+
+.house-note--northwest {
+  top: 19%;
+  left: 18%;
+  transform: rotate(-49deg);
+}
+
+.house-note--northeast {
+  top: 19%;
+  right: 19%;
+  transform: rotate(49deg);
+}
+
+.house-note--southwest {
+  bottom: 18%;
+  left: 17%;
+  transform: rotate(48deg);
+}
+
+.house-note--southeast {
+  right: 17%;
+  bottom: 18%;
+  transform: rotate(-48deg);
 }
 
 .sun-sign-label {
   position: absolute;
-  top: 8.5%;
+  top: 14%;
   left: 50%;
   margin: 0;
   color: #8f6726;
@@ -317,8 +361,7 @@ input {
   transform: translate(-50%, -8px);
 }
 
-.phase-3 .sun-sign-label,
-.phase-4 .sun-sign-label {
+.phase-3 .sun-sign-label {
   animation: label-arrival 900ms 1.15s ease-out forwards;
 }
 
@@ -434,7 +477,12 @@ input {
 }
 
 @keyframes sign-arrival {
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0); }
+  to { opacity: 1; transform: translate(-50%, -50%) rotate(var(--sign-rotation)) scale(1); }
+}
+
+@keyframes handwritten-note {
+  from { opacity: 0; filter: blur(3px); }
+  to { opacity: 1; filter: blur(0); }
 }
 
 @keyframes label-arrival {
@@ -468,8 +516,14 @@ input {
     width: 72%;
   }
 
-  .zodiac-symbol {
-    width: clamp(21px, 7vw, 36px);
+  .zodiac-name {
+    min-width: 38px;
+    padding-inline: 0.25em;
+    font-size: clamp(0.48rem, 2vw, 0.7rem);
+  }
+
+  .house-note {
+    font-size: clamp(0.58rem, 2.6vw, 0.82rem);
   }
 }
 
