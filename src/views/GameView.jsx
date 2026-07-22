@@ -1,7 +1,7 @@
 import './Game.css';
 import { connect } from 'react-redux'
 import GameStatusView from './GameStatusView';
-import { NumImages } from '../constants';
+import { DemoImageNumber } from '../constants';
 import { fetchHighScoreList } from '../reducers/thunks';
 import PuzzleView from './PuzzleView';
 import FullImageView from './FullImageView';
@@ -43,7 +43,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onInitGame: (gameId) => {
-            dispatch(initGame({ gameId, imageNumber: Math.floor(Math.random() * NumImages) + 1, doShuffling: true }));
+            dispatch(initGame({ gameId, imageNumber: DemoImageNumber, doShuffling: true }));
             dispatch(fetchHighScoreList);
         }
     }

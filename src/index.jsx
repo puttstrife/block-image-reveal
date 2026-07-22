@@ -4,7 +4,7 @@ import tileGame from './reducers/reducers';
 import { fetchHighScoreList } from './reducers/thunks'
 import { initGame } from './reducers/reducers';
 import { Provider } from 'react-redux';
-import { GameId_3x3, NumImages } from './constants';
+import { DemoImageNumber, GameId_3x3 } from './constants';
 import GameView from './views/GameView';
 import { configureStore } from '@reduxjs/toolkit'
 
@@ -14,7 +14,7 @@ const store = configureStore({
     }
 });
 
-store.dispatch(initGame({ gameId: GameId_3x3, imageNumber: Math.floor(Math.random() * NumImages) + 1, doShuffling: true }));
+store.dispatch(initGame({ gameId: GameId_3x3, imageNumber: DemoImageNumber, doShuffling: true }));
 store.dispatch(fetchHighScoreList);
 
 const container = document.getElementById('root');
@@ -24,4 +24,3 @@ root.render(
         <GameView />
     </Provider>
 );
-
