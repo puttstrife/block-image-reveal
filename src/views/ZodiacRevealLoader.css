@@ -515,7 +515,7 @@ select {
 /* Final reveal: keep only the zodiac-symbol wheel turning behind the sketch. */
 .phase-7 .celestial-wheels {
   z-index: 3;
-  opacity: 0.52;
+  opacity: 0.2;
   visibility: visible;
   transform: translate(-50%, -50%) scale(1);
 }
@@ -527,8 +527,12 @@ select {
 
 .phase-7 .celestial-wheel--middle {
   --wheel-progress: 360deg;
-  opacity: 0.82;
-  animation: celestial-spin-counterclockwise 28s linear infinite;
+  opacity: 1;
+  animation: celestial-spin-counterclockwise 60s linear infinite;
+}
+
+.phase-7 .celestial-wheel--middle .celestial-wheel__art {
+  filter: grayscale(1) contrast(0.78) brightness(0.82);
 }
 
 .planet-map,
