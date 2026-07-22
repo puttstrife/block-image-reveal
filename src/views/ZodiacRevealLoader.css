@@ -605,7 +605,6 @@ select {
   object-fit: cover;
   display: block;
   filter: grayscale(1) blur(14px) contrast(0.84) brightness(1.07);
-  mix-blend-mode: darken;
   opacity: 0;
   transform: scale(1.03);
 }
@@ -658,7 +657,6 @@ select {
   object-fit: cover;
   filter: grayscale(1) blur(var(--tile-blur)) contrast(0.84) brightness(1.07);
   clip-path: inset(0);
-  mix-blend-mode: darken;
   transform: scale(1.03);
   transform-origin: center;
 }
