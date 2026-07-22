@@ -329,7 +329,8 @@ select {
   transition: opacity 650ms ease;
 }
 
-.phase-2 .chart-geometry {
+.phase-2 .chart-geometry,
+.phase-3 .chart-geometry {
   opacity: 0;
 }
 
@@ -499,7 +500,7 @@ select {
   animation: celestial-spin-clockwise 16s linear infinite, wheel-line-reveal 850ms 1.9s ease-out both;
 }
 
-.phase-3 .celestial-wheel--outer,
+.phase-3 .celestial-wheel,
 .phase-4 .celestial-wheel--outer,
 .phase-5 .celestial-wheel--outer {
   --wheel-progress: 360deg;
@@ -508,16 +509,16 @@ select {
 
 .phase-4 .celestial-wheel--outer { opacity: 0.72; }
 
-.phase-3 .celestial-wheel--outer { animation-duration: 52s; }
-.phase-3 .celestial-wheel--middle {
-  --wheel-progress: 360deg;
-  opacity: 1;
-  animation: celestial-spin-counterclockwise 46s linear infinite, wheel-line-remove 850ms 850ms ease-in forwards;
+.phase-3 .celestial-wheel--outer {
+  animation: celestial-spin-clockwise 52s linear infinite;
 }
+
+.phase-3 .celestial-wheel--middle {
+  animation: celestial-spin-counterclockwise 46s linear infinite;
+}
+
 .phase-3 .celestial-wheel--center {
-  --wheel-progress: 360deg;
-  opacity: 1;
-  animation: celestial-spin-clockwise 40s linear infinite, wheel-line-remove 850ms ease-in forwards;
+  animation: celestial-spin-clockwise 40s linear infinite;
 }
 .phase-4 .celestial-wheel--outer { animation-duration: 76s; }
 .phase-4 .celestial-wheel--middle,
@@ -1062,11 +1063,6 @@ select {
 @keyframes wheel-line-reveal {
   from { --wheel-progress: 0deg; opacity: 0.25; }
   to { --wheel-progress: 360deg; opacity: 1; }
-}
-
-@keyframes wheel-line-remove {
-  from { --wheel-progress: 360deg; opacity: 1; }
-  to { --wheel-progress: 0deg; opacity: 0; }
 }
 
 @keyframes constellation-draw {
