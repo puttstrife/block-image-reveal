@@ -21,15 +21,6 @@ const phaseLabels = {
     4: 'Your portrait is revealed'
 };
 
-const BrandMark = ({ compact = false }) => (
-    <div className={`brand-mark ${compact ? 'brand-mark--compact' : ''}`} aria-label='Astro Lover Sketch'>
-        <span className='brand-mark__orbit' aria-hidden='true'>
-            <span className='brand-mark__star' />
-        </span>
-        <span className='brand-mark__name'>Astro Lover <strong>Sketch</strong></span>
-    </div>
-);
-
 const ZodiacRevealLoader = () => {
     const [name, setName] = useState('');
     const [birthdate, setBirthdate] = useState('');
@@ -84,7 +75,6 @@ const ZodiacRevealLoader = () => {
     if (!submittedData) {
         return (
             <main className='reveal-shell reveal-shell--form'>
-                <BrandMark />
                 <section className='identity-card' aria-labelledby='identity-title'>
                     <p className='identity-card__eyebrow'>Your soul sketch awaits</p>
                     <h1 id='identity-title'>Let's Get to Know You</h1>
@@ -128,7 +118,6 @@ const ZodiacRevealLoader = () => {
 
     return (
         <main className={`reveal-shell phase-${phase} ${reducedMotion ? 'reduced-motion' : ''}`}>
-            <BrandMark compact />
             <p className='sr-only' role='status' aria-live='polite'>{phaseLabels[phase]}</p>
             <section className='reveal-stage' data-phase={phase} aria-label='Animated zodiac portrait reveal'>
                 <div className='paper-glow' aria-hidden='true' />

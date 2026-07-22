@@ -48,57 +48,6 @@ input {
   background-size: 110px 110px, 150px 150px;
 }
 
-.brand-mark {
-  position: fixed;
-  z-index: 20;
-  top: clamp(18px, 3vw, 34px);
-  left: clamp(18px, 3vw, 38px);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--brand-cream);
-  font-size: clamp(0.82rem, 1.5vw, 1rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
-
-.brand-mark__orbit {
-  position: relative;
-  display: grid;
-  width: 30px;
-  aspect-ratio: 1;
-  place-items: center;
-  border: 1px solid rgba(239, 184, 57, 0.72);
-  border-radius: 50%;
-}
-
-.brand-mark__orbit::after {
-  content: '';
-  position: absolute;
-  width: 37px;
-  height: 13px;
-  border: 1px solid rgba(239, 184, 57, 0.5);
-  border-radius: 50%;
-  transform: rotate(-28deg);
-}
-
-.brand-mark__star {
-  width: 7px;
-  aspect-ratio: 1;
-  background: var(--brand-gold);
-  box-shadow: 0 0 9px rgba(239, 184, 57, 0.7);
-  transform: rotate(45deg);
-}
-
-.brand-mark__name strong {
-  color: var(--brand-gold);
-  font-weight: 650;
-}
-
-.brand-mark--compact {
-  opacity: 0.88;
-}
-
 .identity-card {
   position: relative;
   width: min(92vw, 470px);
@@ -579,22 +528,6 @@ input {
 
   .reveal-stage {
     width: 96vw;
-  }
-
-  .brand-mark {
-    position: absolute;
-    top: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-  }
-
-  .reveal-shell--form {
-    padding-top: 82px;
-  }
-
-  .brand-mark--compact {
-    display: none;
   }
 
   .portrait-grid {
