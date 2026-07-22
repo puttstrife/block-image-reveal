@@ -26,10 +26,10 @@ const soulmateOptions = [
 ];
 
 const phaseLabels = {
-    1: 'Generating your celestial portrait',
-    2: 'Inscribing your identity',
-    3: 'Revealing your zodiac',
-    4: 'Your portrait is revealed'
+    1: 'The stars are weaving your destined portrait',
+    2: 'Inscribing your name among the stars',
+    3: 'Unveiling your celestial alignment',
+    4: 'Your destined portrait awaits'
 };
 
 const ZodiacRevealLoader = () => {
@@ -256,7 +256,7 @@ const ZodiacRevealLoader = () => {
             <section className='reveal-stage' data-phase={phase} aria-label='Animated zodiac portrait reveal' aria-busy={phase === 1 && !submittedData.portraitUrl}>
                 <div className='paper-glow' aria-hidden='true' />
                 {phase === 1 && !submittedData.portraitUrl && (
-                    <p className='generation-status'>Drawing your portrait…</p>
+                    <p className='generation-status'>Weaving your celestial portrait…</p>
                 )}
                 <svg className='chart-geometry' viewBox='0 0 1000 850' aria-hidden='true'>
                     <defs>
