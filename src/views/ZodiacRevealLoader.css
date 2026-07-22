@@ -1,7 +1,13 @@
 :root {
-  color: #24201a;
-  background: #111018;
-  font-family: Georgia, 'Times New Roman', serif;
+  color: #f8f6f2;
+  background: #100e1b;
+  font-family: 'Geist Variable', Geist, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --brand-ink: #100e1b;
+  --brand-panel: #191726;
+  --brand-border: #2f2a46;
+  --brand-muted: #8f8aa8;
+  --brand-cream: #f8f6f2;
+  --brand-gold: #efb839;
 }
 
 * {
@@ -25,8 +31,9 @@ input {
   place-items: center;
   padding: clamp(12px, 3vw, 36px);
   background:
-    radial-gradient(circle at 50% 14%, rgba(102, 83, 47, 0.16), transparent 28%),
-    linear-gradient(145deg, #0e0d14, #191722 58%, #0d0c12);
+    radial-gradient(circle at 50% 6%, rgba(239, 184, 57, 0.1), transparent 28%),
+    radial-gradient(circle at 85% 80%, rgba(91, 59, 116, 0.18), transparent 34%),
+    linear-gradient(180deg, #100e1b 0%, #191726 50%, #1f1726 100%);
 }
 
 .reveal-shell--form::before {
@@ -34,25 +41,78 @@ input {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.12;
-  background-image: repeating-linear-gradient(115deg, transparent 0 7px, rgba(255, 255, 255, 0.08) 8px);
+  opacity: 0.16;
+  background-image:
+    radial-gradient(circle at 18% 24%, rgba(239, 184, 57, 0.7) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 76% 68%, rgba(248, 246, 242, 0.55) 0 1px, transparent 1.5px);
+  background-size: 110px 110px, 150px 150px;
+}
+
+.brand-mark {
+  position: fixed;
+  z-index: 20;
+  top: clamp(18px, 3vw, 34px);
+  left: clamp(18px, 3vw, 38px);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--brand-cream);
+  font-size: clamp(0.82rem, 1.5vw, 1rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.brand-mark__orbit {
+  position: relative;
+  display: grid;
+  width: 30px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(239, 184, 57, 0.72);
+  border-radius: 50%;
+}
+
+.brand-mark__orbit::after {
+  content: '';
+  position: absolute;
+  width: 37px;
+  height: 13px;
+  border: 1px solid rgba(239, 184, 57, 0.5);
+  border-radius: 50%;
+  transform: rotate(-28deg);
+}
+
+.brand-mark__star {
+  width: 7px;
+  aspect-ratio: 1;
+  background: var(--brand-gold);
+  box-shadow: 0 0 9px rgba(239, 184, 57, 0.7);
+  transform: rotate(45deg);
+}
+
+.brand-mark__name strong {
+  color: var(--brand-gold);
+  font-weight: 650;
+}
+
+.brand-mark--compact {
+  opacity: 0.88;
 }
 
 .identity-card {
   position: relative;
   width: min(92vw, 470px);
-  padding: clamp(30px, 6vw, 54px);
-  border: 1px solid rgba(183, 156, 102, 0.48);
-  border-radius: 4px;
-  background:
-    radial-gradient(circle at 50% 0, rgba(233, 195, 110, 0.25), transparent 25%),
-    linear-gradient(135deg, #f6f1e6, #e8e0d1);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.46), inset 0 0 65px rgba(123, 94, 46, 0.08);
+  padding: clamp(28px, 5vw, 42px);
+  border: 1px solid rgba(248, 246, 242, 0.1);
+  border-radius: 22px;
+  background: rgba(25, 23, 38, 0.92);
+  box-shadow: 0 28px 80px rgba(4, 3, 10, 0.38);
+  backdrop-filter: blur(18px);
 }
 
 .identity-card__eyebrow {
   margin: 0 0 12px;
-  color: #8a6a32;
+  color: var(--brand-gold);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.24em;
@@ -61,14 +121,15 @@ input {
 
 .identity-card h1 {
   margin: 0;
-  font-size: clamp(2rem, 7vw, 3.25rem);
-  font-weight: 400;
-  letter-spacing: -0.045em;
+  color: var(--brand-cream);
+  font-size: clamp(1.75rem, 5vw, 2.45rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
 }
 
 .identity-card__intro {
   margin: 14px 0 30px;
-  color: #665e51;
+  color: var(--brand-muted);
   line-height: 1.55;
 }
 
@@ -79,56 +140,67 @@ input {
 
 .identity-form label {
   margin-top: 10px;
-  color: #4f473b;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  color: var(--brand-cream);
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
 .identity-form input {
   width: 100%;
-  padding: 13px 14px;
-  border: 1px solid #b7aa94;
-  border-radius: 2px;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1px solid #262239;
+  border-radius: 15px;
   outline: none;
-  background: rgba(255, 255, 255, 0.56);
-  color: #28231c;
+  background: transparent;
+  color: var(--brand-cream);
+  color-scheme: dark;
+}
+
+.identity-form input::placeholder {
+  color: var(--brand-muted);
 }
 
 .identity-form input:focus {
-  border-color: #8b6a31;
-  box-shadow: 0 0 0 3px rgba(139, 106, 49, 0.16);
+  border-color: var(--brand-gold);
+  box-shadow: 0 0 0 3px rgba(239, 184, 57, 0.16);
 }
 
 .identity-form input[aria-invalid='true'] {
-  border-color: #9b3f39;
+  border-color: #d46a68;
 }
 
 .identity-form button {
   margin-top: 20px;
   padding: 14px 20px;
-  border: 1px solid #29231a;
-  border-radius: 2px;
-  background: #211d18;
-  color: #f8f2e7;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  background: var(--brand-gold);
+  color: var(--brand-ink);
   cursor: pointer;
-  font-size: 0.84rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  transition: background 180ms ease, transform 180ms ease;
+  font-size: 0.92rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
 .identity-form button:hover {
-  background: #4b3820;
+  background: #f5c85f;
+  box-shadow: 0 8px 24px rgba(239, 184, 57, 0.2);
   transform: translateY(-1px);
+}
+
+.identity-form__note {
+  margin: 0;
+  color: var(--brand-muted);
+  font-size: 0.76rem;
+  text-align: center;
 }
 
 .form-error {
   margin: -3px 0 0;
-  color: #8f2f2a;
-  font-family: system-ui, sans-serif;
+  color: #e48a87;
   font-size: 0.78rem;
 }
 
@@ -142,7 +214,8 @@ input {
   background:
     radial-gradient(circle at 52% 9%, rgba(255, 231, 164, 0.3), transparent 18%),
     linear-gradient(120deg, #f1eee6, #dfddd8 46%, #f0ece3);
-  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.62);
+  border: 1px solid rgba(239, 184, 57, 0.18);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.62), 0 0 0 8px rgba(25, 23, 38, 0.78);
   opacity: 0;
   animation: stage-arrival 1.8s ease-out forwards;
 }
@@ -299,10 +372,10 @@ input {
 }
 
 .zodiac-name--active {
-  border-color: rgba(159, 111, 33, 0.8);
-  background: rgba(255, 229, 160, 0.36);
-  color: #9c6c20;
-  box-shadow: 0 0 18px rgba(211, 158, 58, 0.26);
+  border-color: rgba(239, 184, 57, 0.9);
+  background: rgba(239, 184, 57, 0.2);
+  color: #a66f08;
+  box-shadow: 0 0 18px rgba(239, 184, 57, 0.28);
   font-weight: 700;
 }
 
@@ -354,7 +427,7 @@ input {
   top: 14%;
   left: 50%;
   margin: 0;
-  color: #8f6726;
+  color: #a66f08;
   font-family: 'Snell Roundhand', 'Segoe Script', cursive;
   font-size: clamp(0.8rem, 2.4vw, 1.8rem);
   opacity: 0;
@@ -506,6 +579,22 @@ input {
 
   .reveal-stage {
     width: 96vw;
+  }
+
+  .brand-mark {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .reveal-shell--form {
+    padding-top: 82px;
+  }
+
+  .brand-mark--compact {
+    display: none;
   }
 
   .portrait-grid {
