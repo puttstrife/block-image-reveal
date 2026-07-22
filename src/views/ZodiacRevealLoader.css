@@ -410,24 +410,29 @@ select {
 }
 
 .celestial-wheel {
+  --wheel-scale: 1;
   position: absolute;
   inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transform-origin: center;
   will-change: transform;
 }
 
 .celestial-wheel--outer {
+  --wheel-scale: 1;
   animation: celestial-spin-clockwise 30s linear infinite;
 }
 
 .celestial-wheel--middle {
+  --wheel-scale: 0.89;
   animation: celestial-spin-counterclockwise 22s linear infinite;
 }
 
 .celestial-wheel--center {
+  --wheel-scale: 0.58;
   animation: celestial-spin-clockwise 16s linear infinite;
 }
 
@@ -963,11 +968,13 @@ select {
 }
 
 @keyframes celestial-spin-clockwise {
-  to { transform: rotate(360deg); }
+  from { transform: rotate(0deg) scale(var(--wheel-scale)); }
+  to { transform: rotate(360deg) scale(var(--wheel-scale)); }
 }
 
 @keyframes celestial-spin-counterclockwise {
-  to { transform: rotate(-360deg); }
+  from { transform: rotate(0deg) scale(var(--wheel-scale)); }
+  to { transform: rotate(-360deg) scale(var(--wheel-scale)); }
 }
 
 @keyframes constellation-draw {
