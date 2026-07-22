@@ -242,6 +242,10 @@ select {
   font-size: 0.78rem;
 }
 
+.form-error--generation {
+  text-align: center;
+}
+
 .reveal-stage {
   position: relative;
   isolation: isolate;
@@ -280,6 +284,23 @@ select {
   transform: translateX(-50%);
   opacity: 0;
   animation: glow-awakens 2.4s 0.2s ease-out forwards;
+}
+
+.generation-status {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  bottom: 7%;
+  margin: 0;
+  color: rgba(67, 58, 45, 0.76);
+  font-family: 'Geist Variable', Geist, Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(0.68rem, 1.4vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  animation: generation-pulse 1.8s ease-in-out infinite;
 }
 
 .chart-geometry {
@@ -574,6 +595,11 @@ select {
 @keyframes glow-awakens {
   from { opacity: 0; transform: translateX(-50%) scale(0.75); }
   to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes generation-pulse {
+  0%, 100% { opacity: 0.42; }
+  50% { opacity: 0.92; }
 }
 
 @keyframes draw-chart {

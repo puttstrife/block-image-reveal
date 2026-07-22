@@ -8,11 +8,11 @@ import {
     validateRevealForm,
     ZODIAC_SIGNS
 } from '../zodiac';
+import { preloadPortrait, requestGeneratedPortrait } from '../portraitGeneration';
 import './ZodiacRevealLoader.css';
 
 const tileRevealOrder = [0, 6, 2, 4, 8, 1, 5, 3, 7];
 const tileBlurLevels = [8, 14, 10, 16, 28, 18, 9, 15, 11];
-const portraitUrl = `${import.meta.env.BASE_URL}images/img19.jpg`;
 const MONTHS = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -26,7 +26,7 @@ const soulmateOptions = [
 ];
 
 const phaseLabels = {
-    1: 'Preparing your celestial chart',
+    1: 'Generating your celestial portrait',
     2: 'Inscribing your identity',
     3: 'Revealing your zodiac',
     4: 'Your portrait is revealed'
@@ -44,6 +44,7 @@ const ZodiacRevealLoader = () => {
     const [phase, setPhase] = useState(0);
     const [reducedMotion, setReducedMotion] = useState(false);
     const timers = useRef([]);
+    const generationAbort = useRef();
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -54,7 +55,10 @@ const ZodiacRevealLoader = () => {
         return () => mediaQuery.removeEventListener('change', updatePreference);
     }, []);
 
-    useEffect(() => () => timers.current.forEach(window.clearTimeout), []);
+    useEffect(() => () => {
+        timers.current.forEach(window.clearTimeout);
+        generationAbort.current?.abort();
+    }, []);
 
     const birthdate = birthMonth && birthDay && birthYear
         ? `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`
@@ -75,7 +79,7 @@ const ZodiacRevealLoader = () => {
         [submittedData]
     );
 
-    const beginReveal = event => {
+    const beginReveal = async event => {
         event.preventDefault();
         const validation = validateRevealForm(name, birthdate);
         const nextErrors = { ...validation.errors };
@@ -97,20 +101,58 @@ const ZodiacRevealLoader = () => {
         }
 
         timers.current.forEach(window.clearTimeout);
-        setSubmittedData({ name: validation.trimmedName, birthdate });
+        generationAbort.current?.abort();
+        generationAbort.current = new AbortController();
+        const revealData = { name: validation.trimmedName, birthdate, portraitUrl: '' };
+        setSubmittedData(revealData);
+        setPhase(1);
 
-        const initialPhase = getInitialRevealPhase(reducedMotion);
-        setPhase(initialPhase);
+        const generationInput = {
+            name: validation.trimmedName,
+            birthdate,
+            soulmatePreference
+        };
+        const minimumFirstFrame = new Promise(resolve => window.setTimeout(resolve, REVEAL_TIMINGS.identity));
 
-        if (initialPhase === 4) {
-            return;
+        const generateWithRetry = async () => {
+            try {
+                return await requestGeneratedPortrait(generationInput, { signal: generationAbort.current.signal });
+            } catch (error) {
+                if (generationAbort.current.signal.aborted) {
+                    throw error;
+                }
+                return requestGeneratedPortrait(generationInput, { signal: generationAbort.current.signal });
+            }
+        };
+
+        try {
+            const [generatedPortraitUrl] = await Promise.all([generateWithRetry(), minimumFirstFrame]);
+            await preloadPortrait(generatedPortraitUrl);
+            const completedData = { ...revealData, portraitUrl: generatedPortraitUrl };
+            setSubmittedData(completedData);
+
+            const initialPhase = getInitialRevealPhase(reducedMotion);
+            if (initialPhase === 4) {
+                setPhase(4);
+                return;
+            }
+
+            setPhase(2);
+            timers.current = [
+                window.setTimeout(() => setPhase(3), REVEAL_TIMINGS.zodiac - REVEAL_TIMINGS.identity),
+                window.setTimeout(() => setPhase(4), REVEAL_TIMINGS.portrait - REVEAL_TIMINGS.identity)
+            ];
+        } catch (error) {
+            if (generationAbort.current.signal.aborted) {
+                return;
+            }
+            setSubmittedData(undefined);
+            setPhase(0);
+            setErrors({
+                ...nextErrors,
+                generation: 'The portrait could not be generated. Please try again.'
+            });
         }
-
-        timers.current = [
-            window.setTimeout(() => setPhase(2), REVEAL_TIMINGS.identity),
-            window.setTimeout(() => setPhase(3), REVEAL_TIMINGS.zodiac),
-            window.setTimeout(() => setPhase(4), REVEAL_TIMINGS.portrait)
-        ];
     };
 
     if (!submittedData) {
@@ -200,6 +242,7 @@ const ZodiacRevealLoader = () => {
                         </div>
 
                         <button className='identity-form__submit' type='submit'>Get My Sketch <span aria-hidden='true'>→</span></button>
+                        {errors.generation && <p className='form-error form-error--generation' role='alert'>{errors.generation}</p>}
                         <p className='identity-form__note'>Takes less than 1 minute.</p>
                     </form>
                 </section>
@@ -210,8 +253,11 @@ const ZodiacRevealLoader = () => {
     return (
         <main className={`reveal-shell phase-${phase} ${reducedMotion ? 'reduced-motion' : ''}`}>
             <p className='sr-only' role='status' aria-live='polite'>{phaseLabels[phase]}</p>
-            <section className='reveal-stage' data-phase={phase} aria-label='Animated zodiac portrait reveal'>
+            <section className='reveal-stage' data-phase={phase} aria-label='Animated zodiac portrait reveal' aria-busy={phase === 1 && !submittedData.portraitUrl}>
                 <div className='paper-glow' aria-hidden='true' />
+                {phase === 1 && !submittedData.portraitUrl && (
+                    <p className='generation-status'>Drawing your portrait…</p>
+                )}
                 <svg className='chart-geometry' viewBox='0 0 1000 850' aria-hidden='true'>
                     <defs>
                         <filter id='paper-noise'>
@@ -283,7 +329,9 @@ const ZodiacRevealLoader = () => {
                     className='portrait-grid'
                     aria-label={`Frosted portrait of ${submittedData.name}`}
                 >
-                    <img className='portrait-grid__image' src={portraitUrl} alt='' aria-hidden='true' />
+                    {submittedData.portraitUrl && (
+                        <img className='portrait-grid__image' src={submittedData.portraitUrl} alt='' aria-hidden='true' />
+                    )}
                     {Array.from({ length: 9 }, (_, index) => {
                         const revealIndex = tileRevealOrder.indexOf(index);
                         const tileStyle = {
