@@ -13,6 +13,17 @@ import './ZodiacRevealLoader.css';
 const tileRevealOrder = [0, 6, 2, 4, 8, 1, 5, 3, 7];
 const tileBlurLevels = [8, 14, 10, 16, 28, 18, 9, 15, 11];
 const portraitUrl = `${import.meta.env.BASE_URL}images/img19.jpg`;
+const MONTHS = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+];
+const currentYear = Number(getTodayInputValue().slice(0, 4));
+const birthYears = Array.from({ length: currentYear - 1919 }, (_, index) => currentYear - index);
+const soulmateOptions = [
+    { value: 'man', label: 'A Man' },
+    { value: 'woman', label: 'A Woman' },
+    { value: 'anyone', label: 'Anyone' }
+];
 
 const phaseLabels = {
     1: 'Preparing your celestial chart',
@@ -23,7 +34,11 @@ const phaseLabels = {
 
 const ZodiacRevealLoader = () => {
     const [name, setName] = useState('');
-    const [birthdate, setBirthdate] = useState('');
+    const [birthMonth, setBirthMonth] = useState('');
+    const [birthDay, setBirthDay] = useState('');
+    const [birthYear, setBirthYear] = useState('');
+    const [soulmatePreference, setSoulmatePreference] = useState('');
+    const [email, setEmail] = useState('');
     const [submittedData, setSubmittedData] = useState();
     const [errors, setErrors] = useState({});
     const [phase, setPhase] = useState(0);
@@ -41,6 +56,20 @@ const ZodiacRevealLoader = () => {
 
     useEffect(() => () => timers.current.forEach(window.clearTimeout), []);
 
+    const birthdate = birthMonth && birthDay && birthYear
+        ? `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`
+        : '';
+
+    const daysInSelectedMonth = birthMonth
+        ? new Date(Number(birthYear) || 2000, Number(birthMonth), 0).getDate()
+        : 31;
+
+    useEffect(() => {
+        if (Number(birthDay) > daysInSelectedMonth) {
+            setBirthDay('');
+        }
+    }, [birthDay, daysInSelectedMonth]);
+
     const sunSign = useMemo(
         () => submittedData ? getZodiacSign(submittedData.birthdate) : undefined,
         [submittedData]
@@ -49,9 +78,21 @@ const ZodiacRevealLoader = () => {
     const beginReveal = event => {
         event.preventDefault();
         const validation = validateRevealForm(name, birthdate);
-        setErrors(validation.errors);
+        const nextErrors = { ...validation.errors };
 
-        if (!validation.isValid) {
+        if (!soulmatePreference) {
+            nextErrors.soulmatePreference = 'Choose who you would like us to draw.';
+        }
+
+        if (!email.trim()) {
+            nextErrors.email = 'Enter your email address.';
+        } else if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
+            nextErrors.email = 'Enter a valid email address.';
+        }
+
+        setErrors(nextErrors);
+
+        if (Object.keys(nextErrors).length > 0) {
             return;
         }
 
@@ -80,36 +121,86 @@ const ZodiacRevealLoader = () => {
                     <h1 id='identity-title'>Let's Get to Know You</h1>
                     <p className='identity-card__intro'>Your birth chart is unique to you. We need a few details to read it accurately.</p>
                     <form className='identity-form' onSubmit={beginReveal} noValidate>
-                        <label htmlFor='reveal-name'>First name</label>
-                        <input
-                            id='reveal-name'
-                            name='name'
-                            type='text'
-                            value={name}
-                            maxLength='80'
-                            autoComplete='name'
-                            aria-invalid={Boolean(errors.name)}
-                            aria-describedby={errors.name ? 'reveal-name-error' : undefined}
-                            onChange={event => setName(event.target.value)}
-                            placeholder='Enter your name here...'
-                        />
-                        {errors.name && <p className='form-error' id='reveal-name-error'>{errors.name}</p>}
+                        <div className='form-field'>
+                            <label htmlFor='reveal-name'>First name</label>
+                            <input
+                                id='reveal-name'
+                                name='name'
+                                type='text'
+                                value={name}
+                                maxLength='80'
+                                autoComplete='given-name'
+                                required
+                                aria-invalid={Boolean(errors.name)}
+                                aria-describedby={errors.name ? 'reveal-name-error' : undefined}
+                                onChange={event => setName(event.target.value)}
+                                placeholder='Your first name'
+                            />
+                            {errors.name && <p className='form-error' id='reveal-name-error'>{errors.name}</p>}
+                        </div>
 
-                        <label htmlFor='reveal-birthdate'>When were you born?</label>
-                        <input
-                            id='reveal-birthdate'
-                            name='birthdate'
-                            type='date'
-                            value={birthdate}
-                            max={getTodayInputValue()}
-                            aria-invalid={Boolean(errors.birthdate)}
-                            aria-describedby={errors.birthdate ? 'reveal-birthdate-error' : undefined}
-                            onChange={event => setBirthdate(event.target.value)}
-                        />
-                        {errors.birthdate && <p className='form-error' id='reveal-birthdate-error'>{errors.birthdate}</p>}
+                        <fieldset className='form-field'>
+                            <legend>Date of birth</legend>
+                            <div className='birthdate-fields'>
+                                <label className='sr-only' htmlFor='reveal-month'>Birth month</label>
+                                <select id='reveal-month' value={birthMonth} onChange={event => setBirthMonth(event.target.value)} required aria-invalid={Boolean(errors.birthdate)} aria-describedby={errors.birthdate ? 'reveal-birthdate-error' : undefined}>
+                                    <option value=''>Month</option>
+                                    {MONTHS.map((month, index) => <option value={String(index + 1)} key={month}>{month}</option>)}
+                                </select>
+                                <label className='sr-only' htmlFor='reveal-day'>Birth day</label>
+                                <select id='reveal-day' value={birthDay} onChange={event => setBirthDay(event.target.value)} required aria-invalid={Boolean(errors.birthdate)} aria-describedby={errors.birthdate ? 'reveal-birthdate-error' : undefined}>
+                                    <option value=''>Day</option>
+                                    {Array.from({ length: daysInSelectedMonth }, (_, index) => index + 1).map(day => <option value={String(day)} key={day}>{day}</option>)}
+                                </select>
+                                <label className='sr-only' htmlFor='reveal-year'>Birth year</label>
+                                <select id='reveal-year' value={birthYear} onChange={event => setBirthYear(event.target.value)} required aria-invalid={Boolean(errors.birthdate)} aria-describedby={errors.birthdate ? 'reveal-birthdate-error' : undefined}>
+                                    <option value=''>Year</option>
+                                    {birthYears.map(year => <option value={String(year)} key={year}>{year}</option>)}
+                                </select>
+                            </div>
+                            {errors.birthdate && <p className='form-error' id='reveal-birthdate-error'>{errors.birthdate}</p>}
+                        </fieldset>
 
-                        <button type='submit'>Show Me The Face <span aria-hidden='true'>→</span></button>
-                        <p className='identity-form__note'>Takes less than 30 seconds.</p>
+                        <fieldset className='form-field'>
+                            <legend>Draw my soulmate as...</legend>
+                            <div className='soulmate-options'>
+                                {soulmateOptions.map(option => (
+                                    <label className='soulmate-option' key={option.value}>
+                                        <input
+                                            type='radio'
+                                            name='soulmate-preference'
+                                            value={option.value}
+                                            checked={soulmatePreference === option.value}
+                                            required
+                                            onChange={event => setSoulmatePreference(event.target.value)}
+                                        />
+                                        <span>{option.label}</span>
+                                    </label>
+                                ))}
+                            </div>
+                            {errors.soulmatePreference && <p className='form-error'>{errors.soulmatePreference}</p>}
+                        </fieldset>
+
+                        <div className='form-field'>
+                            <label htmlFor='reveal-email'>Email address</label>
+                            <input
+                                id='reveal-email'
+                                name='email'
+                                type='email'
+                                value={email}
+                                autoComplete='email'
+                                required
+                                aria-invalid={Boolean(errors.email)}
+                                aria-describedby={`${errors.email ? 'reveal-email-error ' : ''}reveal-email-note`}
+                                onChange={event => setEmail(event.target.value)}
+                                placeholder='you@example.com'
+                            />
+                            {errors.email && <p className='form-error' id='reveal-email-error'>{errors.email}</p>}
+                            <p className='form-field__hint' id='reveal-email-note'>Your sketch will be sent here within 24 hours. No spam.</p>
+                        </div>
+
+                        <button className='identity-form__submit' type='submit'>Get My Sketch <span aria-hidden='true'>→</span></button>
+                        <p className='identity-form__note'>Takes less than 1 minute.</p>
                     </form>
                 </section>
             </main>

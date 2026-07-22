@@ -21,7 +21,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -50,7 +51,7 @@ input {
 
 .identity-card {
   position: relative;
-  width: min(92vw, 470px);
+  width: min(94vw, 720px);
   padding: clamp(28px, 5vw, 42px);
   border: 1px solid rgba(248, 246, 242, 0.1);
   border-radius: 22px;
@@ -84,59 +85,147 @@ input {
 
 .identity-form {
   display: grid;
-  gap: 10px;
+  gap: 24px;
 }
 
-.identity-form label {
-  margin-top: 10px;
-  color: var(--brand-cream);
-  font-size: 0.88rem;
+.form-field {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.form-field > label,
+.form-field > legend {
+  padding: 0;
+  color: #9d98b8;
+  font-size: 0.95rem;
   font-weight: 500;
   letter-spacing: 0;
 }
 
-.identity-form input {
+.form-field > legend {
+  margin-bottom: 10px;
+}
+
+.identity-form input:not([type='radio']),
+.identity-form select {
   width: 100%;
-  min-height: 46px;
-  padding: 11px 14px;
-  border: 1px solid #262239;
-  border-radius: 15px;
+  min-width: 0;
+  min-height: 58px;
+  padding: 14px 20px;
+  border: 1px solid #2b2642;
+  border-radius: 16px;
   outline: none;
-  background: transparent;
+  background-color: #191725;
   color: var(--brand-cream);
   color-scheme: dark;
+  font-size: 1.05rem;
 }
 
-.identity-form input::placeholder {
-  color: var(--brand-muted);
+.identity-form input::placeholder,
+.identity-form select:invalid {
+  color: #68637d;
 }
 
-.identity-form input:focus {
+.identity-form input:focus,
+.identity-form select:focus {
   border-color: var(--brand-gold);
   box-shadow: 0 0 0 3px rgba(239, 184, 57, 0.16);
 }
 
-.identity-form input[aria-invalid='true'] {
+.identity-form input[aria-invalid='true'],
+.identity-form select[aria-invalid='true'] {
   border-color: #d46a68;
 }
 
-.identity-form button {
-  margin-top: 20px;
-  padding: 14px 20px;
-  border: 1px solid transparent;
-  border-radius: 15px;
-  background: var(--brand-gold);
-  color: var(--brand-ink);
+.identity-form select {
+  appearance: none;
+  padding-right: 44px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #8f8aa0 50%),
+    linear-gradient(135deg, #8f8aa0 50%, transparent 50%);
+  background-position:
+    calc(100% - 23px) 50%,
+    calc(100% - 17px) 50%;
+  background-repeat: no-repeat;
+  background-size: 7px 7px, 7px 7px;
+}
+
+.birthdate-fields,
+.soulmate-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.soulmate-option {
+  position: relative;
   cursor: pointer;
-  font-size: 0.92rem;
+}
+
+.soulmate-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.soulmate-option span {
+  display: grid;
+  min-height: 58px;
+  place-items: center;
+  padding: 12px 10px;
+  border: 1px solid #2b2642;
+  border-radius: 16px;
+  background: #191725;
+  color: #c4c0cb;
+  font-size: 1.02rem;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+
+.soulmate-option:hover span {
+  border-color: #51466f;
+}
+
+.soulmate-option input:focus-visible + span {
+  border-color: var(--brand-gold);
+  box-shadow: 0 0 0 3px rgba(239, 184, 57, 0.16);
+}
+
+.soulmate-option input:checked + span {
+  border-color: #7856a0;
+  background: #6a468f;
+  color: #fff;
+}
+
+.form-field__hint {
+  margin: 0;
+  color: #716c82;
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+.identity-form .identity-form__submit {
+  margin-top: 6px;
+  padding: 16px 20px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  background: #6a468f;
+  color: #f8f6f2;
+  cursor: pointer;
+  font-size: 1.08rem;
   font-weight: 650;
   letter-spacing: 0;
   transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
-.identity-form button:hover {
-  background: #f5c85f;
-  box-shadow: 0 8px 24px rgba(239, 184, 57, 0.2);
+.identity-form .identity-form__submit:hover {
+  background: #7a54a0;
+  box-shadow: 0 8px 24px rgba(106, 70, 143, 0.28);
   transform: translateY(-1px);
 }
 
@@ -148,7 +237,7 @@ input {
 }
 
 .form-error {
-  margin: -3px 0 0;
+  margin: 0;
   color: #e48a87;
   font-size: 0.78rem;
 }
