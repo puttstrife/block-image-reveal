@@ -419,14 +419,14 @@ select {
   transition: opacity 650ms ease, transform 900ms cubic-bezier(.2, .72, .22, 1);
 }
 
-.phase-2 .celestial-wheels,
-.phase-3 .celestial-wheels {
+.phase-2 .celestial-wheels {
   opacity: 0.86;
   transform: translate(-50%, -50%) scale(1);
 }
 
 .phase-3 .celestial-wheels {
-  opacity: 0.4;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .phase-4 .celestial-wheels {
@@ -500,7 +500,6 @@ select {
   animation: celestial-spin-clockwise 16s linear infinite, wheel-line-reveal 850ms 1.9s ease-out both;
 }
 
-.phase-3 .celestial-wheel,
 .phase-4 .celestial-wheel--outer,
 .phase-5 .celestial-wheel--outer {
   --wheel-progress: 360deg;
@@ -509,17 +508,6 @@ select {
 
 .phase-4 .celestial-wheel--outer { opacity: 0.72; }
 
-.phase-3 .celestial-wheel--outer {
-  animation: celestial-spin-clockwise 52s linear infinite;
-}
-
-.phase-3 .celestial-wheel--middle {
-  animation: celestial-spin-counterclockwise 46s linear infinite;
-}
-
-.phase-3 .celestial-wheel--center {
-  animation: celestial-spin-clockwise 40s linear infinite;
-}
 .phase-4 .celestial-wheel--outer { animation-duration: 76s; }
 .phase-4 .celestial-wheel--middle,
 .phase-4 .celestial-wheel--center,
