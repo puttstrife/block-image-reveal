@@ -436,8 +436,13 @@ select {
 }
 
 .phase-5 .celestial-wheels {
-  opacity: 0.22;
-  transform: translate(-50%, -50%) scale(1.015);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.phase-5 .zodiac-ring {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .celestial-wheel {
