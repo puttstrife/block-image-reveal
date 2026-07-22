@@ -28,11 +28,12 @@ const soulmateOptions = [
 
 const phaseLabels = {
     1: 'The stars are weaving your destined portrait',
-    2: 'Inscribing your name among the stars',
-    3: 'Unveiling your celestial alignment',
-    4: 'Your destined portrait is taking form',
-    5: 'Your destined portrait is ready to unlock',
-    6: 'Your soulmate portrait is revealed'
+    2: 'Turning the celestial wheels',
+    3: 'Inscribing your name among the stars',
+    4: 'Unveiling your celestial alignment',
+    5: 'Your destined portrait is taking form',
+    6: 'Your destined portrait is ready to unlock',
+    7: 'Your soulmate portrait is revealed'
 };
 
 const ZodiacRevealLoader = () => {
@@ -115,7 +116,7 @@ const ZodiacRevealLoader = () => {
             birthdate,
             soulmatePreference
         };
-        const minimumFirstFrame = new Promise(resolve => window.setTimeout(resolve, REVEAL_TIMINGS.identity));
+        const minimumFirstFrame = new Promise(resolve => window.setTimeout(resolve, REVEAL_TIMINGS.wheels));
 
         const generateWithRetry = async () => {
             try {
@@ -135,16 +136,17 @@ const ZodiacRevealLoader = () => {
             setSubmittedData(completedData);
 
             const initialPhase = getInitialRevealPhase(reducedMotion);
-            if (initialPhase === 5) {
-                setPhase(5);
+            if (initialPhase === 6) {
+                setPhase(6);
                 return;
             }
 
             setPhase(2);
             timers.current = [
-                window.setTimeout(() => setPhase(3), REVEAL_TIMINGS.zodiac - REVEAL_TIMINGS.identity),
-                window.setTimeout(() => setPhase(4), REVEAL_TIMINGS.portrait - REVEAL_TIMINGS.identity),
-                window.setTimeout(() => setPhase(5), REVEAL_TIMINGS.complete - REVEAL_TIMINGS.identity)
+                window.setTimeout(() => setPhase(3), REVEAL_TIMINGS.identity - REVEAL_TIMINGS.wheels),
+                window.setTimeout(() => setPhase(4), REVEAL_TIMINGS.zodiac - REVEAL_TIMINGS.wheels),
+                window.setTimeout(() => setPhase(5), REVEAL_TIMINGS.portrait - REVEAL_TIMINGS.wheels),
+                window.setTimeout(() => setPhase(6), REVEAL_TIMINGS.complete - REVEAL_TIMINGS.wheels)
             ];
         } catch (error) {
             if (generationAbort.current.signal.aborted) {
@@ -293,7 +295,13 @@ const ZodiacRevealLoader = () => {
                     </g>
                 </svg>
 
-                <div className='identity-inscription' aria-hidden={phase >= 3}>
+                <div className='celestial-wheels' aria-hidden='true'>
+                    <img className='celestial-wheel celestial-wheel--outer' src='/block-image-reveal/images/celestial-wheels/outer.png' alt='' />
+                    <img className='celestial-wheel celestial-wheel--middle' src='/block-image-reveal/images/celestial-wheels/middle.png' alt='' />
+                    <img className='celestial-wheel celestial-wheel--center' src='/block-image-reveal/images/celestial-wheels/center.png' alt='' />
+                </div>
+
+                <div className='identity-inscription' aria-hidden={phase >= 4}>
                     <p className='inscribed-name'>{submittedData.name}</p>
                     <p className='inscribed-date'>{formatBirthdate(submittedData.birthdate)}</p>
                 </div>
@@ -331,7 +339,7 @@ const ZodiacRevealLoader = () => {
 
                 <div
                     className='portrait-grid'
-                    aria-label={`${phase === 6 ? 'Revealed' : 'Frosted'} portrait of ${submittedData.name}`}
+                    aria-label={`${phase === 7 ? 'Revealed' : 'Frosted'} portrait of ${submittedData.name}`}
                 >
                     {submittedData.portraitUrl && (
                         <img className='portrait-grid__image' src={submittedData.portraitUrl} alt='' aria-hidden='true' />
@@ -354,8 +362,8 @@ const ZodiacRevealLoader = () => {
                         );
                     })}
                 </div>
-                {phase === 5 && (
-                    <button className='unlock-reveal' type='button' onClick={() => setPhase(6)}>
+                {phase === 6 && (
+                    <button className='unlock-reveal' type='button' onClick={() => setPhase(7)}>
                         <svg className='unlock-reveal__icon' viewBox='0 0 48 48' aria-hidden='true'>
                             <path d='M14 21v-5a10 10 0 0 1 19-4' />
                             <rect x='9' y='21' width='30' height='22' rx='6' />

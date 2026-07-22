@@ -1,8 +1,9 @@
 export const REVEAL_TIMINGS = Object.freeze({
-    identity: 2500,
-    zodiac: 5000,
-    portrait: 8000,
-    complete: 12000
+    wheels: 2500,
+    identity: 5000,
+    zodiac: 7500,
+    portrait: 10500,
+    complete: 14500
 });
 
 export const ZODIAC_SIGNS = Object.freeze([
@@ -93,21 +94,24 @@ export const validateRevealForm = (name, birthdate, today = new Date()) => {
 
 export const getRevealPhaseAtElapsed = elapsed => {
     if (elapsed >= REVEAL_TIMINGS.complete) {
-        return 5;
+        return 6;
     }
     if (elapsed >= REVEAL_TIMINGS.portrait) {
-        return 4;
+        return 5;
     }
     if (elapsed >= REVEAL_TIMINGS.zodiac) {
-        return 3;
+        return 4;
     }
     if (elapsed >= REVEAL_TIMINGS.identity) {
+        return 3;
+    }
+    if (elapsed >= REVEAL_TIMINGS.wheels) {
         return 2;
     }
     return 1;
 };
 
-export const getInitialRevealPhase = reducedMotion => reducedMotion ? 5 : 1;
+export const getInitialRevealPhase = reducedMotion => reducedMotion ? 6 : 1;
 
 export const getTodayInputValue = (today = new Date()) => {
     const year = today.getFullYear();

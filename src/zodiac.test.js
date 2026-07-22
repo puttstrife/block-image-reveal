@@ -58,17 +58,19 @@ describe('reveal phase timing', () => {
         [2500, 2],
         [4999, 2],
         [5000, 3],
-        [7999, 3],
-        [8000, 4],
-        [11999, 4],
-        [12000, 5],
-        [60000, 5]
+        [7499, 3],
+        [7500, 4],
+        [10499, 4],
+        [10500, 5],
+        [14499, 5],
+        [14500, 6],
+        [60000, 6]
     ])('returns phase %s at %sms', (elapsed, phase) => {
         expect(getRevealPhaseAtElapsed(elapsed)).toBe(phase);
     });
 
     it('starts directly on the final portrait for reduced motion', () => {
-        expect(getInitialRevealPhase(true)).toBe(5);
+        expect(getInitialRevealPhase(true)).toBe(6);
         expect(getInitialRevealPhase(false)).toBe(1);
     });
 });
