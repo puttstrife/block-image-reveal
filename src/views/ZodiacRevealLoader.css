@@ -326,11 +326,16 @@ select {
 }
 
 .chart-line {
+  --chart-path-length: 2600;
   stroke-width: 1.3;
   opacity: 0;
-  stroke-dasharray: 2600;
-  stroke-dashoffset: 2600;
+  stroke-dasharray: var(--chart-path-length);
+  stroke-dashoffset: var(--chart-path-length);
   animation: draw-chart 2.2s 0.2s ease-out forwards;
+}
+
+.chart-line--frame {
+  --chart-path-length: 3400;
 }
 
 .chart-line--diamond {
@@ -603,7 +608,7 @@ select {
 }
 
 @keyframes draw-chart {
-  0% { opacity: 0; stroke-dashoffset: 2600; }
+  0% { opacity: 0; stroke-dashoffset: var(--chart-path-length); }
   12% { opacity: 0.52; }
   100% { opacity: 0.52; stroke-dashoffset: 0; }
 }
