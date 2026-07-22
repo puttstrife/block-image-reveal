@@ -989,6 +989,7 @@ select {
   inset: 0;
   background: rgba(241, 239, 234, var(--frost-opacity));
   pointer-events: none;
+  transition: background 900ms cubic-bezier(.2, .72, .22, 1);
 }
 
 .portrait-tile__image {
@@ -1005,6 +1006,7 @@ select {
   clip-path: inset(0);
   transform: scale(1.03);
   transform-origin: center;
+  transition: filter 900ms cubic-bezier(.2, .72, .22, 1);
 }
 
 .portrait-tile:nth-child(2),

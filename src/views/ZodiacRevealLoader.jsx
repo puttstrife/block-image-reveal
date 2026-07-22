@@ -124,6 +124,7 @@ const ZodiacRevealLoader = () => {
     const [submittedData, setSubmittedData] = useState();
     const [errors, setErrors] = useState({});
     const [phase, setPhase] = useState(0);
+    const [hasUnlockedPreview, setHasUnlockedPreview] = useState(false);
     const [reducedMotion, setReducedMotion] = useState(false);
     const [isDocumentVisible, setIsDocumentVisible] = useState(true);
     const timers = useRef([]);
@@ -201,6 +202,7 @@ const ZodiacRevealLoader = () => {
         revealRun.current = runId;
         const revealData = { name: validation.trimmedName, birthdate, portraitUrl: '' };
         setSubmittedData(revealData);
+        setHasUnlockedPreview(false);
         setPhase(1);
 
         const generationInput = {
@@ -442,7 +444,7 @@ const ZodiacRevealLoader = () => {
                         };
                         return (
                             <span
-                                className={`portrait-tile ${previewUnlockedTiles.has(index) ? 'portrait-tile--preview-unlocked' : ''}`}
+                                className={`portrait-tile ${hasUnlockedPreview && previewUnlockedTiles.has(index) ? 'portrait-tile--preview-unlocked' : ''}`}
                                 key={index}
                                 style={tileStyle}
                                 aria-hidden='true'
@@ -455,13 +457,23 @@ const ZodiacRevealLoader = () => {
                     })}
                 </div>
                 {phase === 6 && (
-                    <button className='unlock-reveal' type='button' onClick={() => setPhase(7)}>
+                    <button
+                        className='unlock-reveal'
+                        type='button'
+                        onClick={() => {
+                            if (hasUnlockedPreview) {
+                                setPhase(7);
+                                return;
+                            }
+                            setHasUnlockedPreview(true);
+                        }}
+                    >
                         <svg className='unlock-reveal__icon' viewBox='0 0 48 48' aria-hidden='true'>
                             <path d='M14 21v-5a10 10 0 0 1 19-4' />
                             <rect x='9' y='21' width='30' height='22' rx='6' />
                             <circle cx='24' cy='32' r='4' />
                         </svg>
-                        <span>Unlock to Reveal</span>
+                        <span>{hasUnlockedPreview ? 'Unlock All Blocks' : 'Unlock 3 Blocks'}</span>
                     </button>
                 )}
             </section>
