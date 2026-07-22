@@ -900,6 +900,22 @@ select {
 }
 
 .phase-7 .portrait-grid__image {
+  -webkit-mask-image: radial-gradient(
+    ellipse 74% 76% at 50% 48%,
+    #000 0%,
+    #000 64%,
+    rgba(0, 0, 0, 0.82) 76%,
+    rgba(0, 0, 0, 0.38) 88%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 74% 76% at 50% 48%,
+    #000 0%,
+    #000 64%,
+    rgba(0, 0, 0, 0.82) 76%,
+    rgba(0, 0, 0, 0.38) 88%,
+    transparent 100%
+  );
   animation: portrait-unlock 2.2s cubic-bezier(.2, .72, .22, 1) forwards;
 }
 
