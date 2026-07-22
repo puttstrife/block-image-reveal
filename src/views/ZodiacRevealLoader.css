@@ -476,21 +476,21 @@ select {
 .celestial-wheel--outer {
   --wheel-scale: 1;
   --wheel-art-x: -0.08%;
-  --wheel-art-y: 2.23%;
+  --wheel-art-y: 2.15%;
   animation: celestial-spin-clockwise 30s linear infinite;
 }
 
 .celestial-wheel--middle {
   --wheel-scale: 0.89;
-  --wheel-art-x: 0.04%;
-  --wheel-art-y: 1.71%;
+  --wheel-art-x: 0%;
+  --wheel-art-y: 1.99%;
   animation: celestial-spin-counterclockwise 22s linear infinite;
 }
 
 .celestial-wheel--center {
   --wheel-scale: 0.58;
-  --wheel-art-x: 0.04%;
-  --wheel-art-y: 0.8%;
+  --wheel-art-x: 0.08%;
+  --wheel-art-y: 1.04%;
   animation: celestial-spin-clockwise 16s linear infinite;
 }
 
