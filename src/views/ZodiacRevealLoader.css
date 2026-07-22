@@ -306,8 +306,8 @@ select {
   margin: 0;
   padding: 0.28em 0.8em;
   border-radius: 999px;
-  background: rgba(235, 232, 224, 0.86);
-  color: rgba(40, 36, 31, 0.82);
+  background: rgba(235, 232, 224, 0.92);
+  color: #28241f;
   font-family: 'Snell Roundhand', 'Segoe Script', 'Bradley Hand', cursive;
   font-size: clamp(1.15rem, 4.1vw, 3.4rem);
   font-weight: 400;
@@ -317,7 +317,7 @@ select {
   text-transform: none;
   box-shadow: 0 0 26px 16px rgba(235, 232, 224, 0.68);
   transform: translate(-50%, -50%);
-  animation: loading-copy-arrival 700ms ease-out both, generation-pulse 2.4s 700ms ease-in-out infinite;
+  animation: loading-copy-cycle var(--copy-duration, 4000ms) linear both;
 }
 
 .chart-geometry {
@@ -1118,14 +1118,10 @@ select {
   to { opacity: 1; transform: translateX(-50%) scale(1); }
 }
 
-@keyframes generation-pulse {
-  0%, 100% { opacity: 0.42; }
-  50% { opacity: 0.92; }
-}
-
-@keyframes loading-copy-arrival {
-  from { opacity: 0; transform: translate(-50%, -44%) scale(0.98); }
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+@keyframes loading-copy-cycle {
+  0% { opacity: 0; }
+  15%, 80% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @keyframes celestial-spin-clockwise {

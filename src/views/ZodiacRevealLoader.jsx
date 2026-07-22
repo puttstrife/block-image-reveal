@@ -84,8 +84,8 @@ const RomanticAlignment = ({ sunSign }) => {
     return (
         <div className='romantic-alignment' aria-hidden='true'>
             <svg viewBox='0 0 100 100'>
-                <path className='romantic-alignment__line' d='M27 50 H73' />
                 <circle className='romantic-alignment__pulse' cx='50' cy='50' r='3.4' />
+                <path className='romantic-alignment__line' d='M27 50 H73' />
             </svg>
             <span className='romantic-symbol romantic-symbol--left'>{ZODIAC_SYMBOLS[signIndex]}</span>
             <span className='romantic-symbol romantic-symbol--right'>{ZODIAC_SYMBOLS[oppositeIndex]}</span>
@@ -380,7 +380,13 @@ const ZodiacRevealLoader = () => {
             <section className='reveal-stage' data-phase={phase} aria-label='Animated zodiac portrait reveal' aria-busy={phase <= 5}>
                 <div className='paper-glow' aria-hidden='true' />
                 {phase <= 5 && (
-                    <p className='generation-status' key={phase}>{phaseLabels[phase]}</p>
+                    <p
+                        className='generation-status'
+                        key={phase}
+                        style={{ '--copy-duration': `${REVEAL_STAGE_DURATIONS[phase - 1]}ms` }}
+                    >
+                        {phaseLabels[phase]}
+                    </p>
                 )}
                 <svg className='chart-geometry' viewBox='0 0 1000 850' aria-hidden='true'>
                     <defs>
