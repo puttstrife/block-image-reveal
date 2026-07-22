@@ -986,6 +986,14 @@ select {
   animation: tile-reveal 2.5s var(--tile-delay) cubic-bezier(.2, .72, .22, 1) forwards;
 }
 
+.phase-6 .portrait-tile--preview-unlocked::before {
+  background: rgba(241, 239, 234, 0.1);
+}
+
+.phase-6 .portrait-tile--preview-unlocked .portrait-tile__image {
+  filter: grayscale(1) blur(1px) contrast(0.94) brightness(1.03);
+}
+
 .phase-7 .portrait-tile {
   animation: frost-release 1.8s cubic-bezier(.2, .72, .22, 1) forwards;
 }
@@ -993,7 +1001,8 @@ select {
 .unlock-reveal {
   position: absolute;
   z-index: 10;
-  top: 50%;
+  right: auto;
+  bottom: 4%;
   left: 50%;
   display: flex;
   width: min(44%, 480px);
@@ -1011,14 +1020,14 @@ select {
   font-size: clamp(0.92rem, 2vw, 1.65rem);
   font-weight: 750;
   letter-spacing: -0.025em;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .unlock-reveal:hover {
   background: #f1c75e;
   box-shadow: 0 22px 50px rgba(73, 52, 13, 0.34);
-  transform: translate(-50%, calc(-50% - 2px));
+  transform: translate(-50%, -2px);
 }
 
 .unlock-reveal:focus-visible {

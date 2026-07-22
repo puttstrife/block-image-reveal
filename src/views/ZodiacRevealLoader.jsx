@@ -13,6 +13,7 @@ import './ZodiacRevealLoader.css';
 const tileRevealOrder = [0, 6, 2, 4, 8, 1, 5, 3, 7];
 const tileBlurLevels = [6, 18, 10, 26, 44, 32, 13, 38, 22];
 const tileFrostLevels = [0.5, 0.54, 0.51, 0.58, 0.7, 0.61, 0.52, 0.64, 0.56];
+const previewUnlockedTiles = new Set([0, 5, 6]);
 const MONTHS = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -440,7 +441,12 @@ const ZodiacRevealLoader = () => {
                             '--tile-row': Math.floor(index / 3)
                         };
                         return (
-                            <span className='portrait-tile' key={index} style={tileStyle} aria-hidden='true'>
+                            <span
+                                className={`portrait-tile ${previewUnlockedTiles.has(index) ? 'portrait-tile--preview-unlocked' : ''}`}
+                                key={index}
+                                style={tileStyle}
+                                aria-hidden='true'
+                            >
                                 {submittedData.portraitUrl && (
                                     <img className='portrait-tile__image' src={submittedData.portraitUrl} alt='' />
                                 )}
