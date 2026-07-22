@@ -340,7 +340,7 @@ const ZodiacRevealLoader = () => {
                         const tileStyle = {
                             '--tile-delay': `${revealIndex * 180}ms`,
                             '--tile-blur': `${tileBlurLevels[index]}px`,
-                            '--frost-opacity': 0.24 + (tileBlurLevels[index] / 100)
+                            '--frost-opacity': 0.5 + (tileBlurLevels[index] / 100)
                         };
                         return (
                             <span className='portrait-tile' key={index} style={tileStyle} aria-hidden='true' />
