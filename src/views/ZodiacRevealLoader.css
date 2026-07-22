@@ -512,6 +512,25 @@ select {
 .phase-5 .celestial-wheel--center { opacity: 0; }
 .phase-5 .celestial-wheel { animation-play-state: paused; }
 
+/* Final reveal: keep only the zodiac-symbol wheel turning behind the sketch. */
+.phase-7 .celestial-wheels {
+  z-index: 3;
+  opacity: 0.52;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.phase-7 .celestial-wheel--outer,
+.phase-7 .celestial-wheel--center {
+  opacity: 0;
+}
+
+.phase-7 .celestial-wheel--middle {
+  --wheel-progress: 360deg;
+  opacity: 0.82;
+  animation: celestial-spin-counterclockwise 28s linear infinite;
+}
+
 .planet-map,
 .romantic-alignment,
 .energy-reading {
@@ -1261,5 +1280,10 @@ select {
     animation-duration: 1ms !important;
     animation-delay: 0ms !important;
     transition-duration: 1ms !important;
+  }
+
+  .phase-7 .celestial-wheel--middle {
+    animation: none !important;
+    transform: translate(-50%, -50%) scale(var(--wheel-scale));
   }
 }
