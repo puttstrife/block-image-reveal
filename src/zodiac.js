@@ -92,6 +92,9 @@ export const validateRevealForm = (name, birthdate, today = new Date()) => {
 };
 
 export const getRevealPhaseAtElapsed = elapsed => {
+    if (elapsed >= REVEAL_TIMINGS.complete) {
+        return 5;
+    }
     if (elapsed >= REVEAL_TIMINGS.portrait) {
         return 4;
     }
@@ -104,7 +107,7 @@ export const getRevealPhaseAtElapsed = elapsed => {
     return 1;
 };
 
-export const getInitialRevealPhase = reducedMotion => reducedMotion ? 4 : 1;
+export const getInitialRevealPhase = reducedMotion => reducedMotion ? 5 : 1;
 
 export const getTodayInputValue = (today = new Date()) => {
     const year = today.getFullYear();

@@ -29,7 +29,9 @@ const phaseLabels = {
     1: 'The stars are weaving your destined portrait',
     2: 'Inscribing your name among the stars',
     3: 'Unveiling your celestial alignment',
-    4: 'Your destined portrait awaits'
+    4: 'Your destined portrait is taking form',
+    5: 'Your destined portrait is ready to unlock',
+    6: 'Your soulmate portrait is revealed'
 };
 
 const ZodiacRevealLoader = () => {
@@ -132,15 +134,16 @@ const ZodiacRevealLoader = () => {
             setSubmittedData(completedData);
 
             const initialPhase = getInitialRevealPhase(reducedMotion);
-            if (initialPhase === 4) {
-                setPhase(4);
+            if (initialPhase === 5) {
+                setPhase(5);
                 return;
             }
 
             setPhase(2);
             timers.current = [
                 window.setTimeout(() => setPhase(3), REVEAL_TIMINGS.zodiac - REVEAL_TIMINGS.identity),
-                window.setTimeout(() => setPhase(4), REVEAL_TIMINGS.portrait - REVEAL_TIMINGS.identity)
+                window.setTimeout(() => setPhase(4), REVEAL_TIMINGS.portrait - REVEAL_TIMINGS.identity),
+                window.setTimeout(() => setPhase(5), REVEAL_TIMINGS.complete - REVEAL_TIMINGS.identity)
             ];
         } catch (error) {
             if (generationAbort.current.signal.aborted) {
@@ -327,7 +330,7 @@ const ZodiacRevealLoader = () => {
 
                 <div
                     className='portrait-grid'
-                    aria-label={`Frosted portrait of ${submittedData.name}`}
+                    aria-label={`${phase === 6 ? 'Revealed' : 'Frosted'} portrait of ${submittedData.name}`}
                 >
                     {submittedData.portraitUrl && (
                         <img className='portrait-grid__image' src={submittedData.portraitUrl} alt='' aria-hidden='true' />
@@ -344,6 +347,16 @@ const ZodiacRevealLoader = () => {
                         );
                     })}
                 </div>
+                {phase === 5 && (
+                    <button className='unlock-reveal' type='button' onClick={() => setPhase(6)}>
+                        <svg className='unlock-reveal__icon' viewBox='0 0 48 48' aria-hidden='true'>
+                            <path d='M14 21v-5a10 10 0 0 1 19-4' />
+                            <rect x='9' y='21' width='30' height='22' rx='6' />
+                            <circle cx='24' cy='32' r='4' />
+                        </svg>
+                        <span>Unlock to Reveal</span>
+                    </button>
+                )}
             </section>
         </main>
     );

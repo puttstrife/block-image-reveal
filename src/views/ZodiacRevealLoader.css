@@ -365,8 +365,12 @@ select {
 
 .phase-3 .zodiac-orbit,
 .phase-4 .zodiac-orbit,
+.phase-5 .zodiac-orbit,
+.phase-6 .zodiac-orbit,
 .phase-3 .zodiac-tick,
-.phase-4 .zodiac-tick {
+.phase-4 .zodiac-tick,
+.phase-5 .zodiac-tick,
+.phase-6 .zodiac-tick {
   animation: draw-zodiac 2.5s ease-out forwards;
 }
 
@@ -439,7 +443,9 @@ select {
 }
 
 .phase-3 .zodiac-name,
-.phase-4 .zodiac-name {
+.phase-4 .zodiac-name,
+.phase-5 .zodiac-name,
+.phase-6 .zodiac-name {
   animation: sign-arrival 800ms calc(var(--sign-delay) + 250ms) ease-out forwards;
 }
 
@@ -470,7 +476,9 @@ select {
 }
 
 .phase-3 .house-note,
-.phase-4 .house-note {
+.phase-4 .house-note,
+.phase-5 .house-note,
+.phase-6 .house-note {
   animation: handwritten-note 900ms 1.1s ease-out forwards;
 }
 
@@ -534,8 +542,14 @@ select {
   pointer-events: none;
 }
 
-.phase-4 .portrait-grid {
+.phase-4 .portrait-grid,
+.phase-5 .portrait-grid,
+.phase-6 .portrait-grid {
   opacity: 1;
+}
+
+.phase-6 .portrait-grid {
+  animation: grid-frame-release 2.2s cubic-bezier(.2, .72, .22, 1) forwards;
 }
 
 .portrait-grid__image {
@@ -552,6 +566,15 @@ select {
 
 .phase-4 .portrait-grid__image {
   animation: portrait-arrival 3.8s ease-out forwards;
+}
+
+.phase-5 .portrait-grid__image {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.phase-6 .portrait-grid__image {
+  animation: portrait-unlock 2.2s cubic-bezier(.2, .72, .22, 1) forwards;
 }
 
 .portrait-tile {
@@ -593,6 +616,62 @@ select {
 
 .phase-4 .portrait-tile {
   animation: tile-reveal 2.5s var(--tile-delay) cubic-bezier(.2, .72, .22, 1) forwards;
+}
+
+.phase-5 .portrait-tile {
+  opacity: 1;
+  filter: brightness(1);
+  transform: scale(1);
+}
+
+.phase-6 .portrait-tile {
+  animation: frost-release 1.8s cubic-bezier(.2, .72, .22, 1) forwards;
+}
+
+.unlock-reveal {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  width: min(62%, 610px);
+  min-height: clamp(68px, 12vw, 112px);
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 2.4vw, 24px);
+  padding: 16px clamp(22px, 4vw, 46px);
+  border: 0;
+  border-radius: 999px;
+  background: #e9b83f;
+  color: #17202d;
+  box-shadow: 0 18px 42px rgba(73, 52, 13, 0.28);
+  cursor: pointer;
+  font-size: clamp(1rem, 3.2vw, 2.65rem);
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  transform: translate(-50%, -50%);
+  transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.unlock-reveal:hover {
+  background: #f1c75e;
+  box-shadow: 0 22px 50px rgba(73, 52, 13, 0.34);
+  transform: translate(-50%, calc(-50% - 2px));
+}
+
+.unlock-reveal:focus-visible {
+  outline: 3px solid #17202d;
+  outline-offset: 4px;
+}
+
+.unlock-reveal__icon {
+  width: clamp(30px, 5vw, 54px);
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
 }
 
 .sr-only {
@@ -656,6 +735,43 @@ select {
   to { opacity: 1; transform: scale(1.08); }
 }
 
+@keyframes portrait-unlock {
+  from {
+    opacity: 1;
+    filter: grayscale(1) blur(18px) contrast(0.82) brightness(1.08);
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    filter: grayscale(1) blur(0) contrast(0.96) brightness(1.02);
+    transform: scale(1);
+  }
+}
+
+@keyframes grid-frame-release {
+  to {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: 0 24px 64px rgba(46, 37, 25, 0.18);
+  }
+}
+
+@keyframes frost-release {
+  from {
+    opacity: 1;
+    -webkit-backdrop-filter: blur(var(--tile-blur)) saturate(0.62);
+    backdrop-filter: blur(var(--tile-blur)) saturate(0.62);
+  }
+  to {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: inset 0 0 0 rgba(255, 255, 255, 0);
+    opacity: 0;
+    -webkit-backdrop-filter: blur(0) saturate(1);
+    backdrop-filter: blur(0) saturate(1);
+  }
+}
+
 @media (max-width: 620px) {
   .reveal-shell {
     padding: 8px;
@@ -667,6 +783,14 @@ select {
 
   .portrait-grid {
     width: 70%;
+  }
+
+  .unlock-reveal {
+    width: 66%;
+    min-height: 58px;
+    gap: 10px;
+    padding-inline: 18px;
+    font-size: clamp(0.88rem, 4vw, 1.2rem);
   }
 
   .identity-inscription {
