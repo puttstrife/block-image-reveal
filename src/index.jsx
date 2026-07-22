@@ -1,26 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import tileGame from './reducers/reducers';
-import { fetchHighScoreList } from './reducers/thunks'
-import { initGame } from './reducers/reducers';
-import { Provider } from 'react-redux';
-import { DemoImageNumber, GameId_3x3 } from './constants';
-import GameView from './views/GameView';
-import { configureStore } from '@reduxjs/toolkit'
-
-const store = configureStore({
-    reducer: {
-        tileGame
-    }
-});
-
-store.dispatch(initGame({ gameId: GameId_3x3, imageNumber: DemoImageNumber, doShuffling: true }));
-store.dispatch(fetchHighScoreList);
+import ZodiacRevealLoader from './views/ZodiacRevealLoader';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
-root.render(
-    <Provider store={store}>
-        <GameView />
-    </Provider>
-);
+root.render(<ZodiacRevealLoader />);
