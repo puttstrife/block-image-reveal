@@ -82,7 +82,8 @@ There is currently no frontend request timeout. Provider or background-removal f
 | `src/zodiac.js` | Pure date validation, display formatting, and tropical zodiac calculation |
 | `src/*.test.js` | Generation contract and zodiac boundary coverage |
 | `public/images/celestial-wheels/` | Three production wheel layers used by Stage 2 |
-| `vite.config.ts` | `/block-image-reveal/` base path and local `/api` proxy |
+| `vite.config.ts` | Root deployment base path and local `/api` proxy |
+| `vercel.json` | Production rewrite from `/api/*` to `block-image-reveal-api` |
 
 ## Direct dependencies
 
@@ -135,7 +136,7 @@ Successful response fields used by this frontend:
 
 ## Production integration
 
-The Vite development proxy does not exist after deployment. Production must expose `POST /api/generate` on the same origin as the frontend or configure a platform rewrite to the deployed `block-image-reveal-api` handler. The configured Vite base path is `/block-image-reveal/`.
+The Vite development proxy does not exist after deployment. `vercel.json` preserves the same-origin `/api/generate` contract by rewriting API requests to `https://block-image-reveal-api.vercel.app`. The configured Vite base path is `/`, matching the Vercel production root.
 
 Before release, run:
 
