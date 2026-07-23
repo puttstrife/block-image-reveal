@@ -222,7 +222,7 @@ const ZodiacRevealLoader = () => {
                 if (revealRun.current !== runId) return;
                 generationState.status = 'ready';
                 setSubmittedData({ ...revealData, portraitUrl: generatedPortraitUrl });
-            } catch (error) {
+            } catch {
                 if (controller.signal.aborted || revealRun.current !== runId) return;
                 generationState.status = 'error';
             }
