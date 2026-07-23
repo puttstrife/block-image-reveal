@@ -493,7 +493,7 @@ select {
 }
 
 .celestial-wheel--center {
-  --wheel-scale: 0.58;
+  --wheel-scale: 0.53;
   --wheel-art-x: 0.08%;
   --wheel-art-y: 1.04%;
   animation: celestial-spin-clockwise 16s linear infinite;
