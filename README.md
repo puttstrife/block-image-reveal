@@ -138,6 +138,48 @@ Successful response fields used by this frontend:
 
 The Vite development proxy does not exist after deployment. `vercel.json` preserves the same-origin `/api/generate` contract by rewriting API requests to `https://block-image-reveal-api.vercel.app`. The configured Vite base path is `/`, matching the Vercel production root.
 
+### Production background removal
+
+Background removal is not performed by this frontend or by the Vercel function itself. The Docker service is maintained in the separate [`block-image-reveal-api`](https://github.com/puttstrife/block-image-reveal-api) repository:
+
+```text
+block-image-reveal-api/
+├── background-removal/
+│   ├── Dockerfile
+│   └── app.py
+└── docker-compose.yml
+```
+
+The service uses `rembg` with the CPU U2Net model and exposes:
+
+- `GET /health` — readiness check
+- `POST /api/remove` — multipart image upload returning a transparent PNG
+- Container port `7000`
+
+For production, deploy `block-image-reveal-api/background-removal` as a Docker service on Render, Railway, Fly.io, or another container host:
+
+1. Connect the `puttstrife/block-image-reveal-api` GitHub repository.
+2. Set the service root/build context to `background-removal`.
+3. Build with `background-removal/Dockerfile` and expose port `7000`.
+4. If the host supports persistent disks, persist `/root/.u2net` so the U2Net model does not need to download after every restart.
+5. Confirm the deployed service responds successfully:
+
+   ```bash
+   curl https://YOUR-BACKGROUND-REMOVAL-HOST/health
+   ```
+
+6. In the Vercel project named `block-image-reveal-api`, add the production environment variable:
+
+   ```text
+   BACKGROUND_REMOVAL_URL=https://YOUR-BACKGROUND-REMOVAL-HOST
+   ```
+
+7. Redeploy `block-image-reveal-api` so the function receives the new environment variable. No frontend redeployment is required.
+
+The generation API posts the provider image to `${BACKGROUND_REMOVAL_URL}/api/remove` with a 20-second timeout. When the variable is absent, the service is unreachable, or processing times out, the API deliberately returns the original generated image unchanged so portrait generation remains available.
+
+The stock removal endpoint has no authentication or rate limiting. Restrict it to the generation API where the hosting platform permits private networking, or add authentication and request limits before exposing it to sustained public traffic.
+
 Before release, run:
 
 ```bash
