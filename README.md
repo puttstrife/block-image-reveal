@@ -2,20 +2,20 @@
 
 `block-image-reveal` is the active AstroLover Sketch frontend. It collects a first name, birth date, soulmate preference, and email address; requests an AI-generated portrait; and presents a staged celestial loader followed by a frosted 3×3 portrait reveal.
 
-The application does not generate images itself. During local development it proxies `/api/*` to the sibling `astroloversketch` service on port `8787`.
+The application does not generate images itself. During local development it proxies `/api/*` to the sibling `block-image-reveal-api` service on port `8787`.
 
 ## Repository responsibilities
 
 | Repository | Responsibility |
 | --- | --- |
 | `block-image-reveal` | Active React form, loader animation, portrait tiles, unlock flow, zodiac/date helpers, and frontend tests |
-| `astroloversketch` | `POST /api/generate`, image-provider integration, prompt enrichment, and background removal |
+| `block-image-reveal-api` | `POST /api/generate`, image-provider integration, prompt enrichment, and background removal |
 
 ## Prerequisites
 
 - Node.js 20 or newer
 - npm 10 or newer
-- The sibling `astroloversketch` API running on `http://127.0.0.1:8787`
+- The sibling `block-image-reveal-api` service running on `http://127.0.0.1:8787`
 - Docker Desktop or another Docker Compose runtime for local background removal
 
 ## Local development
@@ -23,14 +23,14 @@ The application does not generate images itself. During local development it pro
 Start background removal:
 
 ```bash
-cd ../astroloversketch
+cd ../block-image-reveal-api
 docker compose up -d background-removal
 ```
 
 Start the generation API in a second terminal:
 
 ```bash
-cd ../astroloversketch
+cd ../block-image-reveal-api
 npm install
 cp .env.example .env
 npm run server
@@ -135,7 +135,7 @@ Successful response fields used by this frontend:
 
 ## Production integration
 
-The Vite development proxy does not exist after deployment. Production must expose `POST /api/generate` on the same origin as the frontend or configure a platform rewrite to the deployed `astroloversketch` handler. The configured Vite base path is `/block-image-reveal/`.
+The Vite development proxy does not exist after deployment. Production must expose `POST /api/generate` on the same origin as the frontend or configure a platform rewrite to the deployed `block-image-reveal-api` handler. The configured Vite base path is `/block-image-reveal/`.
 
 Before release, run:
 
